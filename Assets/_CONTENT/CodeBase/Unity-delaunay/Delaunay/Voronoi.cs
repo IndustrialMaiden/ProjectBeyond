@@ -25,7 +25,7 @@ namespace _CONTENT.CodeBase.Unity_delaunay.Delaunay
 	{
 		private SiteList _sites;
 		private Dictionary <Vector2,Site> _sitesIndexedByLocation;
-		private List<Triangle> _triangles;
+		public List<Triangle> _triangles;
 		private List<Edge> _edges;
 
 		

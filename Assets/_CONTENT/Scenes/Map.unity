@@ -204,7 +204,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -229,7 +229,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 50
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -253,7 +253,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 50, y: 40, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -372,15 +372,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Seed: 19944953
-  _regionsCount: 9
+  _regionsCount: 15
   _width: 100
   _height: 80
   _pointSpacing: 1
-  _noiseScale: 8
+  _noiseScale: 7
   _noiseResolution: 0.1
   Regenerate: 0
   PlanetPrefab: {fileID: 7582010688218532255, guid: d149958f73a7da4489fe0a2ed9d8a96c, type: 3}
   RegionPrefab: {fileID: 2717237849279735054, guid: 807fe62fd5288764aa95c2a2109300ee, type: 3}
+  planet: {fileID: 0}
 --- !u!4 &995182906
 Transform:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.Extensions
+namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Extensions
 {
     public static class Vector2Extensions
     {

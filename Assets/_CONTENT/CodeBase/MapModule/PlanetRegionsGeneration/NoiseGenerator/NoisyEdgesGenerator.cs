@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using _CONTENT.CodeBase.MapModule.Graph;
+using _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph;
 using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.NoiseGenerator
+namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.NoiseGenerator
 {
     public class NoisyEdgesGenerator
     {
@@ -79,50 +79,5 @@ namespace _CONTENT.CodeBase.MapModule.NoiseGenerator
 
             return noiseResult;
         }
-
-
-        /*public Dictionary<NewEdge, List<Vector2>> GenerateNoisyEdges(List<NewEdge> edges)
-        {
-            Dictionary<NewEdge, List<Vector2>> noisyEdgePoints = new Dictionary<NewEdge, List<Vector2>>();
-
-            foreach (var edge in edges)
-            {
-                Vector2 start = edge.p0.position;
-                Vector2 end = edge.p1.position;
-
-                Vector2 direction = (end - start).normalized;
-                float segmentLength = (end - start).magnitude;
-                int numPoints = Mathf.FloorToInt(segmentLength / _pointSpacing) - 1;
-
-                List<Vector2> edgeNoisyPoints = new List<Vector2> {start};
-
-                for (int j = 1; j <= numPoints; j++)
-                {
-                    float t = (float) j / (numPoints + 1);
-                    Vector2 pointOnEdge = Vector2.Lerp(start, end, t);
-
-                    // Усиливаем сглаживание у углов
-                    float weight = Mathf.Sin(t * Mathf.PI);
-
-                    // Генерируем шум с учетом весового коэффициента
-                    Vector2 noise = PerlinNoiseAtPoint(pointOnEdge, _noiseResolution) * weight;
-                    Vector2 noisyPoint = pointOnEdge + noise * _noiseScale;
-
-                    edgeNoisyPoints.Add(noisyPoint);
-                }
-
-                edgeNoisyPoints.Add(end);
-                noisyEdgePoints[edge] = edgeNoisyPoints;
-            }
-
-            return noisyEdgePoints;
-        }*/
-
-        /*private Vector2 PerlinNoiseAtPoint(Vector2 point, float resolution)
-        {
-            float noiseX = Mathf.PerlinNoise(point.x * resolution, point.y * resolution) - 0.5f;
-            float noiseY = Mathf.PerlinNoise(point.y * resolution, point.x * resolution) - 0.5f;
-            return new Vector2(noiseX, noiseY);
-        }*/
     }
 }

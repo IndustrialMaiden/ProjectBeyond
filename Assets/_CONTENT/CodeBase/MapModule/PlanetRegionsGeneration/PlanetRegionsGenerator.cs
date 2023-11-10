@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using _CONTENT.CodeBase.MapModule.Graph;
 using _CONTENT.CodeBase.MapModule.Planetary;
+using _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace _CONTENT.CodeBase.MapModule
+namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
 {
     public class MapGenerator : MonoBehaviour
     {
@@ -25,9 +23,6 @@ namespace _CONTENT.CodeBase.MapModule
         [SerializeField] private float _noiseScale;
         [SerializeField] private float _noiseResolution;
 
-        [Space][Header("Select Next Region")]
-        private int SelectedRegion = 0;
-
         [Space] [Header("Regenerate")]
         public bool Regenerate;
 
@@ -35,8 +30,13 @@ namespace _CONTENT.CodeBase.MapModule
         [SerializeField] public Planet PlanetPrefab;
         [SerializeField] public PlanetaryRegion RegionPrefab;
 
-        private Planet planet;
+        public Planet planet;
 
+
+        private void Start()
+        {
+            RegeneratePlanet();
+        }
 
         void Update()
         {
@@ -59,9 +59,6 @@ namespace _CONTENT.CodeBase.MapModule
             {
                 Random.InitState(Seed);
             }
-            
-            Debug.Log(Seed);
-            
 
             _map = new Map(_regionsCount, _width, _height, _pointSpacing, _noiseScale, _noiseResolution);
             if (planet != null)
@@ -73,30 +70,19 @@ namespace _CONTENT.CodeBase.MapModule
             Seed = -10;
         }
 
-        private void Start()
-        {
-            RegeneratePlanet();
-        }
-        
         private void CreatePlanet()
         {
             planet = Instantiate(PlanetPrefab, Vector3.zero, Quaternion.identity);
 
-            // Создание регионов и назначение соседей
             foreach (var center in _map.Graph.centers)
             {
                 CreateRegion(center, planet);
-
-                // Назначение соседей региона
-                
             }
             
             foreach (var region in planet.Regions)
             {
                 AssignNeighbors(region, _map.Graph.centers[region.Index], planet);
             }
-            
-            
         }
 
         private void CreateRegion(Center center, Planet planet)
@@ -105,7 +91,10 @@ namespace _CONTENT.CodeBase.MapModule
             region.Index = center.index;
             region.Center = center.point;
             region.name = $"Region {region.Index}";
-            region.Collider.points = center.NoisyPoints.ToArray();
+            region.Faction = (Faction)Random.Range(0, 5);
+            region.Collider.points = center.noisyPoints.ToArray();
+            ApplyFactionMaterial(region);
+            CreateBorder(region);
             planet.Regions.Add(region);
         }
 
@@ -113,91 +102,47 @@ namespace _CONTENT.CodeBase.MapModule
         {
             foreach (var index in center.neighborsIndexes)
             {
-                // Теперь мы уверены, что все регионы были созданы, и индекс будет валиден
                 region.Neighbours.Add(planet.Regions[index]);
             }
         }
-        
-        private void OnDrawGizmos()
+
+        private void ApplyFactionMaterial(PlanetaryRegion region)
         {
-            if (_map != null && _map.Graph.centers != null && planet != null && planet.Regions != null)
+            switch (region.Faction)
             {
-                Gizmos.color = Color.yellow;
-                for (int i = 0; i < planet.Regions[SelectedRegion].Neighbours.Count; i++)
-                {
-                    Gizmos.DrawSphere(planet.Regions[SelectedRegion].Neighbours[i].Center, 0.3f);
-                
-                }
-
-                Gizmos.color = Color.red;
-                Gizmos.DrawSphere(planet.Regions[SelectedRegion].Center, 0.4f);
+                case Faction.Insects:
+                    region.MeshRenderer.material = Resources.Load<Material>("Z_DemoMaterials/Insects_Mat");
+                    break;
+                case Faction.Demons:
+                    region.MeshRenderer.material = Resources.Load<Material>("Z_DemoMaterials/Demons_Mat");
+                    break;
+                case Faction.Mechanoids:
+                    region.MeshRenderer.material = Resources.Load<Material>("Z_DemoMaterials/Mechanoids_Mat");
+                    break;
+                case Faction.Mages:
+                    region.MeshRenderer.material = Resources.Load<Material>("Z_DemoMaterials/Mages_Mat");
+                    break;
+                case Faction.Necrons:
+                    region.MeshRenderer.material = Resources.Load<Material>("Z_DemoMaterials/Necrons_Mat");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            
-            if (_map != null && _map.Graph.edges != null) 
-            {
-                Gizmos.color = Color.white;
-                for (int i = 0; i < _map.Graph.edges.Count; i++) 
-                {
-                    if (_map.Graph.edges[i].v0 != null && _map.Graph.edges[i].v1 != null)
-                    {
-                        Vector2 left = _map.Graph.edges[i].v0.point;
-                        Vector2 right = _map.Graph.edges[i].v1.point;
-                    
-                        Gizmos.DrawLine (left, right);
-                    }
-
-                }
-            }
-
-            if (_map != null && _map.Graph.centers != null)
-            {
-                Gizmos.color = Color.blue;
-                foreach (var center in _map.Graph.centers)
-                {
-                    foreach (var vector2s in center.NoisyEdgePoints.Values)
-                    {
-                        foreach (var vector2 in vector2s)
-                        {
-                            Gizmos.DrawSphere(vector2, 0.4f);
-                        }
-                    }
-                }
-            }
-
-            /*if (_map != null && _map.Graph.corners != null)
-            {
-                Gizmos.color = Color.magenta;
-                foreach (var corner in _map.Graph.corners)
-                {
-                    Gizmos.DrawSphere(corner.point, 0.6f);
-                }
-            }*/
-            
-            if (_map != null && _map.Graph.centers != null)
-            {
-                Gizmos.color = Color.magenta;
-                foreach (var corner in _map.Graph.centers[0].corners)
-                {
-                    Gizmos.DrawSphere(corner.point, 0.6f);
-                }
-            }
-
-            /*if (_map != null && _map.Graph.centers != null)
-            {
-                Gizmos.color = Color.yellow;
-                foreach (var graphCenter in _map.Graph.centers)
-                {
-                    foreach (var graphCenterNewEdge in graphCenter.newEdges)
-                    {
-                        Gizmos.DrawSphere(graphCenterNewEdge.p0.position, 0.8f);
-                        Gizmos.DrawSphere(graphCenterNewEdge.p1.position, 0.8f);
-                        
-                    }
-                }
-            }*/
-            
-            
         }
 
+        private void CreateBorder(PlanetaryRegion region)
+        {
+            Vector3[] linePositions = new Vector3[region.Collider.GetPath(0).Length];
+            var colliderPositions = region.Collider.GetPath(0);
+            for (int i = 0; i < colliderPositions.Length; i++)
+            {
+                linePositions[i] = new Vector3(colliderPositions[i].x, colliderPositions[i].y, -5);
+            }
+
+            var lineRenderer = region.GetComponent<LineRenderer>();
+            lineRenderer.positionCount = linePositions.Length;
+            lineRenderer.SetPositions(linePositions);
+
+        }
     }
 }

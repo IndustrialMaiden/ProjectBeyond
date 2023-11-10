@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.Graph
+namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph
 {
     public class Center
     {
@@ -14,8 +13,8 @@ namespace _CONTENT.CodeBase.MapModule.Graph
         public List<Edge> borders = new List<Edge>();
         public List<Corner> corners = new List<Corner>();
         public List<NewEdge> newEdges = new List<NewEdge>();
-        public Dictionary<NewEdge, List<Vector2>> NoisyEdgePoints = new Dictionary<NewEdge, List<Vector2>>();
-        public List<Vector2> NoisyPoints = new List<Vector2>();
+        public Dictionary<NewEdge, List<Vector2>> noisyEdgePoints = new Dictionary<NewEdge, List<Vector2>>();
+        public List<Vector2> noisyPoints = new List<Vector2>();
 
     }
 }

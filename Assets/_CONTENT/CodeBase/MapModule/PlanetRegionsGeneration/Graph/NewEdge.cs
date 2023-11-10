@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.Graph
+namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph
 {
     public class NewEdge
     {

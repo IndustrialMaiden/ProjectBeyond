@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using _CONTENT.CodeBase.MapModule.Extensions;
-using _CONTENT.CodeBase.MapModule.NoiseGenerator;
+using _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Extensions;
+using _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.NoiseGenerator;
 using _CONTENT.CodeBase.Unity_delaunay.Delaunay;
 using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.Graph
+namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph
 {
     public class Graph
     {
         List<KeyValuePair<int, Corner>> _cornerMap = new List<KeyValuePair<int, Corner>>();
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
         public List<Center> centers = new List<Center>();
         public List<Corner> corners = new List<Corner>();
         public List<Edge> edges = new List<Edge>();
@@ -148,7 +148,7 @@ namespace _CONTENT.CodeBase.MapModule.Graph
             var bottomLeft = centers.OrderByDescending(p => p.point.x + Height - p.point.y).First();
             AddCorner(bottomLeft, Width, 0);
 
-            AdjustCorners(centers, Width, Height, 7f);
+            AdjustCorners(centers, Width, Height, 8f);
 
             foreach (var center in centers)
             {
@@ -156,109 +156,42 @@ namespace _CONTENT.CodeBase.MapModule.Graph
                 CreateNewEdges(center);
                 UpdateEdgeVerticesClockwise(center);
 
-                center.NoisyEdgePoints = _noiseGenerator.GenerateNoisyEdges(center.newEdges);
-                foreach (var vector2s in center.NoisyEdgePoints.Values)
+                center.noisyEdgePoints = _noiseGenerator.GenerateNoisyEdges(center.newEdges);
+                foreach (var vector2s in center.noisyEdgePoints.Values)
                 {
-                    center.NoisyPoints.AddRange(vector2s);
+                    center.noisyPoints.AddRange(vector2s);
                 }
                 
-                var uniquePoints = RemoveNoisyPointsDuplicates(center.NoisyPoints);
-                center.NoisyPoints = uniquePoints;
+                var uniquePoints = RemoveNoisyPointsDuplicates(center.noisyPoints);
+                center.noisyPoints = uniquePoints;
             }
         }
 
-        private void RemovingWrongNeighbours()
+        private Corner MakeCorner(Vector2? nullablePoint)
         {
-            for (var i = 0; i < centers.Count; i++)
-            {
-                var centerCorners = centers[i].corners;
-                List<Center> validNeighbors = new List<Center>();
-                List<int> neighborsIndexes = new List<int>();
+            if (nullablePoint == null)
+                return null;
 
-                foreach (var neighbor in centers[i].neighbors)
+            var point = nullablePoint.Value;
+
+            for (var i = (int) (point.x - 1); i <= (int) (point.x + 1); i++)
+            {
+                foreach (var kvp in _cornerMap.Where(p => p.Key == i))
                 {
-                    var neighborCorners = neighbor.corners;
-
-                    if (centerCorners.Any(c => neighborCorners.Contains(c)))
-                    {
-                        validNeighbors.Add(neighbor);
-                        neighborsIndexes.Add(neighbor.index);
-                    }
-                }
-
-                centers[i].neighbors = validNeighbors;
-                centers[i].neighborsIndexes = neighborsIndexes;
-            }
-        }
-
-        /*public void SortAndRemapCenterIndexes(List<Center> centers)
-        {
-            const float rangeSize = 40f; // Размер диапазона для Y
-            List<Center> sortedCenters = new List<Center>();
-
-            // Определяем максимальное значение Y среди всех центров
-            float maxY = centers.Max(c => c.point.y);
-
-            // Проходим через каждый диапазон Y
-            for (float currentY = 0; currentY <= maxY; currentY += rangeSize)
-            {
-                // Фильтруем центры, которые попадают в текущий диапазон
-                var currentRangeCenters = centers
-                    .Where(c => c.point.y >= currentY && c.point.y < currentY + rangeSize)
-                    .OrderBy(c => c.point.x)
-                    .ToList();
-        
-                // Добавляем отсортированные центры текущего диапазона к общему списку
-                sortedCenters.AddRange(currentRangeCenters);
-            }
-
-            // Обновляем индексы в соответствии с новой сортировкой
-            for (int i = 0; i < sortedCenters.Count; i++)
-            {
-                sortedCenters[i].index = i;
-            }
-
-            // Создаем словарь для быстрого поиска новых индексов
-            var indexMap = sortedCenters.ToDictionary(c => c.point, c => c.index);
-
-            // Обновляем индексы соседей каждого центра
-            foreach (var center in centers)
-            {
-                foreach (var neighbor in center.neighbors)
-                {
-                    if (indexMap.TryGetValue(neighbor.point, out var newIndex))
-                    {
-                        neighbor.index = newIndex;
-                    }
+                    var dx = point.x - kvp.Value.point.x;
+                    var dy = point.y - kvp.Value.point.y;
+                    if (dx * dx + dy * dy < 1e-6)
+                        return kvp.Value;
                 }
             }
 
-            // Копируем отсортированный список обратно в исходный список
-            centers.Clear();
-            centers.AddRange(sortedCenters);
-        }*/
-        
-        public List<Vector2> RemoveNoisyPointsDuplicates(List<Vector2> points)
-        {
-            if (points == null || points.Count <= 1)
-                return points;
+            var corner = new Corner {index = corners.Count, point = point};
+            corners.Add(corner);
+            corner.border = point.x == 0 || point.x == Width || point.y == 0 || point.y == Height;
 
-            List<Vector2> uniquePoints = new List<Vector2> { points[0] };
+            _cornerMap.Add(new KeyValuePair<int, Corner>((int) (point.x), corner));
 
-            for (int i = 1; i < points.Count; i++)
-            {
-                var current = points[i];
-                var lastUnique = uniquePoints.Last();
-
-                // Сравниваем координаты до трёх знаков после запятой без округления
-                if (Math.Truncate(current.x * 1000) != Math.Truncate(lastUnique.x * 1000) ||
-                    Math.Truncate(current.y * 1000) != Math.Truncate(lastUnique.y * 1000))
-                {
-                    uniquePoints.Add(current);
-                }
-            }
-
-            return uniquePoints;
+            return corner;
         }
 
         private static void AddCorner(Center topLeft, int x, int y)
@@ -266,35 +199,19 @@ namespace _CONTENT.CodeBase.MapModule.Graph
             if (topLeft.point.x != x || topLeft.point.y != y)
                 topLeft.corners.Add(new Corner {point = new Vector2(x, y)});
         }
-
-        private Comparison<Corner> ClockwiseComparison(Center center)
+        
+        private void AddToCornerList(List<Corner> v, Corner x)
         {
-            Comparison<Corner> result =
-                (a, b) =>
-                {
-                    return (int) (((a.point.x - center.point.x) * (b.point.y - center.point.y) -
-                                   (b.point.x - center.point.x) * (a.point.y - center.point.y)) * 1000);
-                };
-            return result;
+            if (x != null && v.IndexOf(x) < 0)
+                v.Add(x);
         }
 
-        private Comparison<Edge> ClockwiseComparisonEdges(Center center)
+        private void AddToCenterList(List<Center> v, Center x)
         {
-            Comparison<Edge> result = (a, b) =>
+            if (x != null && v.IndexOf(x) < 0)
             {
-                // Вычислите угол относительно центра для каждой грани
-                float angleA = Mathf.Atan2(a.midpoint.y - center.point.y, a.midpoint.x - center.point.x);
-                float angleB = Mathf.Atan2(b.midpoint.y - center.point.y, b.midpoint.x - center.point.x);
-
-                // Нормализация углов от 0 до 2 * PI
-                angleA = (angleA >= 0) ? angleA : (2 * Mathf.PI + angleA);
-                angleB = (angleB >= 0) ? angleB : (2 * Mathf.PI + angleB);
-
-                // Сортируйте грани по углу
-                return angleA.CompareTo(angleB);
-            };
-
-            return result;
+                v.Add(x);
+            }
         }
 
         private Comparison<Corner> ClockwiseComparisonCorners(Center center)
@@ -385,34 +302,6 @@ namespace _CONTENT.CodeBase.MapModule.Graph
             }
         }
 
-
-        private Corner MakeCorner(Vector2? nullablePoint)
-        {
-            if (nullablePoint == null)
-                return null;
-
-            var point = nullablePoint.Value;
-
-            for (var i = (int) (point.x - 1); i <= (int) (point.x + 1); i++)
-            {
-                foreach (var kvp in _cornerMap.Where(p => p.Key == i))
-                {
-                    var dx = point.x - kvp.Value.point.x;
-                    var dy = point.y - kvp.Value.point.y;
-                    if (dx * dx + dy * dy < 1e-6)
-                        return kvp.Value;
-                }
-            }
-
-            var corner = new Corner {index = corners.Count, point = point};
-            corners.Add(corner);
-            corner.border = point.x == 0 || point.x == Width || point.y == 0 || point.y == Height;
-
-            _cornerMap.Add(new KeyValuePair<int, Corner>((int) (point.x), corner));
-
-            return corner;
-        }
-
         private void CreateNewEdges(Center center)
         {
             int cornerCount = center.corners.Count;
@@ -429,41 +318,105 @@ namespace _CONTENT.CodeBase.MapModule.Graph
             }
         }
 
-        private void AddToCornerList(List<Corner> v, Corner x)
+        private void RemovingWrongNeighbours()
         {
-            if (x != null && v.IndexOf(x) < 0)
-                v.Add(x);
-        }
-
-        private void AddToCenterList(List<Center> v, Center x)
-        {
-            if (x != null && v.IndexOf(x) < 0)
+            for (var i = 0; i < centers.Count; i++)
             {
-                v.Add(x);
+                var centerCorners = centers[i].corners;
+                List<Center> validNeighbors = new List<Center>();
+                List<int> neighborsIndexes = new List<int>();
+
+                foreach (var neighbor in centers[i].neighbors)
+                {
+                    var neighborCorners = neighbor.corners;
+
+                    if (centerCorners.Any(c => neighborCorners.Contains(c)))
+                    {
+                        validNeighbors.Add(neighbor);
+                        neighborsIndexes.Add(neighbor.index);
+                    }
+                }
+
+                centers[i].neighbors = validNeighbors;
+                centers[i].neighborsIndexes = neighborsIndexes;
             }
         }
 
-        private Edge lookupEdgeFromCenter(Center p, Center r)
+        public List<Vector2> RemoveNoisyPointsDuplicates(List<Vector2> points)
         {
-            foreach (var edge in p.borders)
+            if (points == null || points.Count <= 1)
+                return points;
+
+            List<Vector2> uniquePoints = new List<Vector2> { points[0] };
+
+            for (int i = 1; i < points.Count; i++)
             {
-                if (edge.d0 == r || edge.d1 == r)
-                    return edge;
+                var current = points[i];
+                var lastUnique = uniquePoints.Last();
+
+                // Сравниваем координаты до трёх знаков после запятой без округления
+                if (Math.Truncate(current.x * 1000) != Math.Truncate(lastUnique.x * 1000) ||
+                    Math.Truncate(current.y * 1000) != Math.Truncate(lastUnique.y * 1000))
+                {
+                    uniquePoints.Add(current);
+                }
             }
 
-            return null;
-        }
-
-        private Edge lookupEdgeFromCorner(Corner q, Corner s)
-        {
-            foreach (var edge in q.protrudes)
+            if (Math.Truncate(uniquePoints[0].x * 1000) == Math.Truncate(uniquePoints[^1].x * 1000) ||
+                Math.Truncate(uniquePoints[0].y * 1000) != Math.Truncate(uniquePoints[^1].y * 1000))
             {
-                if (edge.v0 == s || edge.v1 == s)
-                    return edge;
+                uniquePoints.Remove(uniquePoints[^1]);
             }
 
-            return null;
+            return uniquePoints;
         }
+        
+        /*public void SortAndRemapCenterIndexes(List<Center> centers)
+        {
+            const float rangeSize = 40f; // Размер диапазона для Y
+            List<Center> sortedCenters = new List<Center>();
+
+            // Определяем максимальное значение Y среди всех центров
+            float maxY = centers.Max(c => c.point.y);
+
+            // Проходим через каждый диапазон Y
+            for (float currentY = 0; currentY <= maxY; currentY += rangeSize)
+            {
+                // Фильтруем центры, которые попадают в текущий диапазон
+                var currentRangeCenters = centers
+                    .Where(c => c.point.y >= currentY && c.point.y < currentY + rangeSize)
+                    .OrderBy(c => c.point.x)
+                    .ToList();
+        
+                // Добавляем отсортированные центры текущего диапазона к общему списку
+                sortedCenters.AddRange(currentRangeCenters);
+            }
+
+            // Обновляем индексы в соответствии с новой сортировкой
+            for (int i = 0; i < sortedCenters.Count; i++)
+            {
+                sortedCenters[i].index = i;
+            }
+
+            // Создаем словарь для быстрого поиска новых индексов
+            var indexMap = sortedCenters.ToDictionary(c => c.point, c => c.index);
+
+            // Обновляем индексы соседей каждого центра
+            foreach (var center in centers)
+            {
+                foreach (var neighbor in center.neighbors)
+                {
+                    if (indexMap.TryGetValue(neighbor.point, out var newIndex))
+                    {
+                        neighbor.index = newIndex;
+                    }
+                }
+            }
+
+            // Копируем отсортированный список обратно в исходный список
+            centers.Clear();
+            centers.AddRange(sortedCenters);
+        }*/
 
         public static IEnumerable<Vector2> RelaxPoints(IEnumerable<Vector2> startingPoints, float width, float height)
         {

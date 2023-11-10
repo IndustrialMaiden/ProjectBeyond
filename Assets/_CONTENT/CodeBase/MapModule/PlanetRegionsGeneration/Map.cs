@@ -3,11 +3,11 @@ using System.Linq;
 using _CONTENT.CodeBase.Unity_delaunay.Delaunay;
 using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule
+namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
 {
     public class Map
     {
-        private const int NUM_LLOYD_RELAXATIONS = 5;
+        private const int LloydRelaxationsNumber = 5;
         
         public Graph.Graph Graph { get; }
 
@@ -23,8 +23,8 @@ namespace _CONTENT.CodeBase.MapModule
                 );
             }
 
-            for (int i = 0; i < NUM_LLOYD_RELAXATIONS; i++)
-                points = MapModule.Graph.Graph.RelaxPoints(points, width, height).ToList();
+            for (int i = 0; i < LloydRelaxationsNumber; i++)
+                points = PlanetRegionsGeneration.Graph.Graph.RelaxPoints(points, width, height).ToList();
 
             var voronoi = new Voronoi(points, null, new Rect(0, 0, width, height));
             
