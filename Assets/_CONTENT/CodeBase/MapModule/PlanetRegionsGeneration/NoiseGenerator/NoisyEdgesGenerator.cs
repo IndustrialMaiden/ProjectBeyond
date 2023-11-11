@@ -18,8 +18,47 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.NoiseGenerator
             _noiseResolution = noiseResolution;
             _noiseOffset = new Vector2(Random.value * 1000, Random.value * 1000);
         }
-
+        
         public Dictionary<NewEdge, List<Vector2>> GenerateNoisyEdges(List<NewEdge> edges)
+        {
+            Dictionary<NewEdge, List<Vector2>> noisyEdgePoints = new Dictionary<NewEdge, List<Vector2>>();
+
+            foreach (var edge in edges)
+            {
+                Vector2 start = edge.p0.position;
+                Vector2 end = edge.p1.position;
+
+                float segmentLength = (end - start).magnitude;
+                int numPoints = Mathf.FloorToInt(segmentLength / _pointSpacing) - 1;
+
+                List<Vector2> edgeNoisyPoints = new List<Vector2> { start };
+
+                for (int j = 1; j <= numPoints; j++)
+                {
+                    float t = (float)j / (numPoints + 1);
+                    Vector2 pointOnEdge = Vector2.Lerp(start, end, t);
+
+                    // Модифицированная кривая веса
+                    float weight = Mathf.Sin(t * Mathf.PI);
+                    //float weight = 1 - Mathf.Pow((2 * t - 1), 2);
+
+                    // Генерация шума с учетом весового коэффициента
+                    Vector2 noise = PerlinNoiseAtPoint(pointOnEdge, _noiseResolution, 4, 0.3f) * weight;
+                    Vector2 noisyPoint = pointOnEdge + noise * _noiseScale;
+
+                    edgeNoisyPoints.Add(noisyPoint);
+                }
+
+                edgeNoisyPoints.Add(end);
+                noisyEdgePoints[edge] = edgeNoisyPoints;
+            }
+
+            return noisyEdgePoints;
+        }
+
+
+
+        /*public Dictionary<NewEdge, List<Vector2>> GenerateNoisyEdges(List<NewEdge> edges)
         {
             Dictionary<NewEdge, List<Vector2>> noisyEdgePoints = new Dictionary<NewEdge, List<Vector2>>();
 
@@ -54,7 +93,7 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.NoiseGenerator
             }
 
             return noisyEdgePoints;
-        }
+        }*/
         
         private Vector2 PerlinNoiseAtPoint(Vector2 point, float resolution, int octaves, float persistence)
         {

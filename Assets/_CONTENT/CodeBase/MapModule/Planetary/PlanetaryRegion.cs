@@ -11,6 +11,7 @@ namespace _CONTENT.CodeBase.MapModule.Planetary
         [HideInInspector] public Vector2 Center;
 
         public List<PlanetaryRegion> Neighbours = new List<PlanetaryRegion>();
+        public Vector3[] SelectionPath;
 
         public PolygonCollider2D Collider;
         public MeshRenderer MeshRenderer;

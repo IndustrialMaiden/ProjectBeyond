@@ -148,7 +148,7 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph
             var bottomLeft = centers.OrderByDescending(p => p.point.x + Height - p.point.y).First();
             AddCorner(bottomLeft, Width, 0);
 
-            AdjustCorners(centers, Width, Height, 8f);
+            AdjustCorners(centers, Width, Height, 11f);
 
             foreach (var center in centers)
             {
@@ -370,7 +370,8 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph
 
             return uniquePoints;
         }
-        
+
+
         /*public void SortAndRemapCenterIndexes(List<Center> centers)
         {
             const float rangeSize = 40f; // Размер диапазона для Y

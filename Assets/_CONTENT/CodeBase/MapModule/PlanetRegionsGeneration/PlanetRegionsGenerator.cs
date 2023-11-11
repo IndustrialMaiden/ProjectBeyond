@@ -1,4 +1,5 @@
 using System;
+using _CONTENT.CodeBase.Demo;
 using _CONTENT.CodeBase.MapModule.Planetary;
 using _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
     public class MapGenerator : MonoBehaviour
     {
         private Map _map;
+
+        [SerializeField] private UIDemoController _ui;
 
         [Header("Seed")]
         public int Seed;
@@ -30,7 +33,7 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
         [SerializeField] public Planet PlanetPrefab;
         [SerializeField] public PlanetaryRegion RegionPrefab;
 
-        public Planet planet;
+        [HideInInspector] public Planet planet;
 
 
         private void Start()
@@ -47,7 +50,7 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
             }
         }
 
-        private void RegeneratePlanet()
+        public void RegeneratePlanet()
         {
             if (Seed < 0)
             {
@@ -66,6 +69,8 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
                 Destroy(planet.gameObject);
             }
             CreatePlanet();
+            
+            _ui.SetText(Seed, _regionsCount);
 
             Seed = -10;
         }
@@ -95,6 +100,7 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
             region.Collider.points = center.noisyPoints.ToArray();
             ApplyFactionMaterial(region);
             CreateBorder(region);
+            CreateSelectionPath(region);
             planet.Regions.Add(region);
         }
 
@@ -132,17 +138,31 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
 
         private void CreateBorder(PlanetaryRegion region)
         {
-            Vector3[] linePositions = new Vector3[region.Collider.GetPath(0).Length];
             var colliderPositions = region.Collider.GetPath(0);
+            
+            Vector3[] linePositions = new Vector3[colliderPositions.Length];
+            
             for (int i = 0; i < colliderPositions.Length; i++)
             {
-                linePositions[i] = new Vector3(colliderPositions[i].x, colliderPositions[i].y, -5);
+                linePositions[i] = new Vector3(colliderPositions[i].x, colliderPositions[i].y, -0.5f);
             }
 
             var lineRenderer = region.GetComponent<LineRenderer>();
             lineRenderer.positionCount = linePositions.Length;
             lineRenderer.SetPositions(linePositions);
 
+        }
+
+        private void CreateSelectionPath(PlanetaryRegion region)
+        {
+            var colliderPositions = region.Collider.GetPath(0);
+            
+            region.SelectionPath = new Vector3[colliderPositions.Length];
+            
+            for (int i = 0; i < colliderPositions.Length; i++)
+            {
+                region.SelectionPath[i] = new Vector3(colliderPositions[i].x, colliderPositions[i].y, -1f);
+            }
         }
     }
 }
