@@ -7,11 +7,11 @@ namespace _CONTENT.CodeBase.MapModule.Planetary
     public class Planet : MonoBehaviour
     {
         public int PlanetIndex;
-        public List<PlanetaryRegion> Regions;
+        public List<RegionData> Regions;
 
         public Planet()
         {
-            Regions = new List<PlanetaryRegion>();
+            Regions = new List<RegionData>();
         }
     }
 }

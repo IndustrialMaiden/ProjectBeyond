@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using _CONTENT.CodeBase.MapModule.Planetary;
 
-[RequireComponent(typeof (PlanetaryRegion))]
+[RequireComponent(typeof (RegionData))]
 [RequireComponent (typeof (PolygonCollider2D))]
 [RequireComponent (typeof (MeshRenderer))]
 [RequireComponent (typeof (MeshFilter))]
@@ -12,17 +12,19 @@ public class PolygonMesh2D : MonoBehaviour {
 	protected PolygonCollider2D polygon;
 	protected MeshFilter meshFilter;
 
-	int pathIndex = 0;
-	public float zPosition = 0f;
+	private int pathIndex = 0;
+	private float zPosition = 0f;
 
-	void Start() {
+	void Start() 
+	{
 		polygon = gameObject.GetComponent<PolygonCollider2D>();
 		meshFilter = gameObject.GetComponent<MeshFilter>();
 		
 		CreateMesh();
 	} 
 
-	public void CreateMesh() {
+	public void CreateMesh() 
+	{
 		Vector2[] path = polygon.GetPath(pathIndex);
 		Mesh msh = new Mesh();
 
@@ -33,7 +35,6 @@ public class PolygonMesh2D : MonoBehaviour {
 		msh.RecalculateBounds();
 		meshFilter.mesh = msh;
 
-		//recalculate UV
 		Bounds bounds = msh.bounds;
 
 		msh.uv = path.Select(v => new Vector2(v.x / bounds.size.x, v.y / bounds.size.y)).ToArray();
