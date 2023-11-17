@@ -6,14 +6,14 @@ using Random = UnityEngine.Random;
 
 namespace _CONTENT.CodeBase.MapModule.Planetary
 {
-    public class RegionData : MonoBehaviour
+    public class Region : MonoBehaviour
     {
         [SerializeField] private LineRenderer Selection;
         [SerializeField] private PolygonCollider2D Collider;
         public int Index { get; private set; }
         public Vector2 Center { get; private set; }
         public Faction Faction { get; private set; }
-        public List<RegionData> Neighbours  { get; } = new List<RegionData>();
+        public List<Region> Neighbours  { get; } = new List<Region>();
         public Vector3[] SelectionPath { get; private set; }
 
         public MeshRenderer MeshRenderer;
@@ -30,9 +30,9 @@ namespace _CONTENT.CodeBase.MapModule.Planetary
             CreateBorder();
         }
 
-        public void AddNeighbour(RegionData regionData)
+        public void AddNeighbour(Region region)
         {
-            Neighbours.Add(regionData);
+            Neighbours.Add(region);
         }
 
         public void ActivateSelection(bool state)

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using _CONTENT.CodeBase.MapModule.Planetary;
 
-[RequireComponent(typeof (RegionData))]
+[RequireComponent(typeof (Region))]
 [RequireComponent (typeof (PolygonCollider2D))]
 [RequireComponent (typeof (MeshRenderer))]
 [RequireComponent (typeof (MeshFilter))]

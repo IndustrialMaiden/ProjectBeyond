@@ -24,17 +24,17 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
         [SerializeField] private float _noiseResolution;
 
         [Space] [Header("Test Prefabs")]
-        [SerializeField] public Planet PlanetPrefab;
-        [SerializeField] public RegionData regionDataPrefab;
+        [SerializeField] public PlanetInside planetInsidePrefab;
+        [SerializeField] public Region regionPrefab;
 
-        [HideInInspector] public Planet planet;
+        [HideInInspector] public PlanetInside planetInside;
 
 
         private void Start()
         {
             Random.InitState(Seed);
             
-            if (planet != null) Destroy(planet.gameObject);
+            if (planetInside != null) Destroy(planetInside.gameObject);
             
             CreatePlanet();
         }
@@ -43,26 +43,26 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
         {
             _planetaryMap = new PlanetaryMap(_regionsCount, _width, _height, _pointSpacing, _noiseScale, _noiseResolution);
             
-            planet = Instantiate(PlanetPrefab, Vector3.zero, Quaternion.identity);
+            planetInside = Instantiate(planetInsidePrefab, Vector3.zero, Quaternion.identity);
 
             foreach (var center in _planetaryMap.Graph.centers)
             {
-                var region = Instantiate(regionDataPrefab, Vector3.zero, Quaternion.identity, planet.transform);
+                var region = Instantiate(regionPrefab, Vector3.zero, Quaternion.identity, planetInside.transform);
                 region.Construct(center);
-                planet.Regions.Add(region);
+                planetInside.Regions.Add(region);
             }
             
-            foreach (var region in planet.Regions)
+            foreach (var region in planetInside.Regions)
             {
-                AssignNeighbors(region, _planetaryMap.Graph.centers[region.Index], planet);
+                AssignNeighbors(region, _planetaryMap.Graph.centers[region.Index], planetInside);
             }
         }
 
-        private void AssignNeighbors(RegionData regionData, Center center, Planet planet)
+        private void AssignNeighbors(Region region, Center center, PlanetInside planetInside)
         {
             foreach (var index in center.neighborsIndexes)
             {
-                regionData.AddNeighbour(planet.Regions[index]);
+                region.AddNeighbour(planetInside.Regions[index]);
             }
         }
     }

@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.Planetary
 {
-    public class Planet : MonoBehaviour
+    public class PlanetInside : MonoBehaviour
     {
         public int PlanetIndex;
-        public List<RegionData> Regions;
+        public List<Region> Regions;
 
-        public Planet()
+        public PlanetInside()
         {
-            Regions = new List<RegionData>();
+            Regions = new List<Region>();
         }
     }
 }
