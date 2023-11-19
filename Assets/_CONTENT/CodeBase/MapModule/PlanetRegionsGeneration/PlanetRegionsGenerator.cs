@@ -1,6 +1,7 @@
 using System;
 using _CONTENT.CodeBase.MapModule.Planetary;
 using _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph;
+using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,6 +10,7 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
     public class MapGenerator : MonoBehaviour
     {
         private PlanetaryMap _planetaryMap;
+        public int PlanetIndex;
 
         [Header("Seed")]
         public int Seed;
@@ -29,10 +31,12 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
 
         [HideInInspector] public PlanetInside planetInside;
 
+        private RandomGenerator _random;
+
 
         private void Start()
         {
-            Random.InitState(Seed);
+            _random = new RandomGenerator(Seed + PlanetIndex);
             
             if (planetInside != null) Destroy(planetInside.gameObject);
             
@@ -41,14 +45,15 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration
 
         private void CreatePlanet()
         {
-            _planetaryMap = new PlanetaryMap(_regionsCount, _width, _height, _pointSpacing, _noiseScale, _noiseResolution);
+            _planetaryMap = new PlanetaryMap(_regionsCount, _random, _width, _height, _pointSpacing, _noiseScale, _noiseResolution);
             
             planetInside = Instantiate(planetInsidePrefab, Vector3.zero, Quaternion.identity);
 
             foreach (var center in _planetaryMap.Graph.centers)
             {
                 var region = Instantiate(regionPrefab, Vector3.zero, Quaternion.identity, planetInside.transform);
-                region.Construct(center);
+                var faction = (Faction) _random.Range(0, 5);
+                region.Construct(center, faction);
                 planetInside.Regions.Add(region);
             }
             

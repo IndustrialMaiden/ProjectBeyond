@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
@@ -11,24 +12,25 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
 
         private float _size;
         private float _distance;
-        private float _movingSpeed;
         private DirectionType _directionType;
+        public DirectionType DirectionType => _directionType;
         private Transform _gravityCenter;
+        public Transform GravityCenter => _gravityCenter;
         
 
         //PlanetType
-        //Mass
 
-        public void Construct(int index, float size, float distance, float movingSpeed, DirectionType directionType, Transform gravityCenter)
+        public void Construct(int index, float size, float distance, DirectionType directionType, Transform gravityCenter)
         {
             Index = index;
             _size = size;
             _distance = distance;
-            _movingSpeed = movingSpeed;
             _directionType = directionType;
             _gravityCenter = gravityCenter;
 
             ApplyPlanetView();
+
+            GetComponent<PlanetRotation>().enabled = true;
         }
 
         public void AssignNeighbours(PlanetOutside planet)
@@ -45,11 +47,7 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
         private void RandomizeColor()
         {
             var spriteRenderer = GetComponent<SpriteRenderer>();
-            
-            float r = Random.Range(0f, 1f);
-            float g = Random.Range(0f, 1f);
-            float b = Random.Range(0f, 1f);
-            spriteRenderer.color = new Color(r, g, b);
+            spriteRenderer.color = LucidRandom.ColorHSV();
         }
     }
 }

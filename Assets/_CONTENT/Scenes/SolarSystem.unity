@@ -171,8 +171,8 @@ MonoBehaviour:
   _systemCenterPrefab: {fileID: 3631239336064652656, guid: e2b066c9cf37ce043a384cdf9ec2f349, type: 3}
   _planetsCount: 6
   _movingSpeedScale: 0
-  _possibleSize: {x: 4, y: 8}
-  _possibleDistance: {x: 1, y: 2}
+  _possibleSize: {x: 5, y: 8}
+  _possibleDistance: {x: 3, y: 5}
   _possibleMovingSpeed: {x: 1, y: 2}
 --- !u!1 &1987898511
 GameObject:

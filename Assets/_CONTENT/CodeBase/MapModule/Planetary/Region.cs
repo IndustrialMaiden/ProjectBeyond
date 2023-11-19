@@ -18,12 +18,12 @@ namespace _CONTENT.CodeBase.MapModule.Planetary
 
         public MeshRenderer MeshRenderer;
 
-        public void Construct(Center center)
+        public void Construct(Center center, Faction faction)
         {
             Index = center.index;
             Center = center.point;
             gameObject.name = $"Region {Index}";
-            Faction = (Faction)Random.Range(0, 5);
+            Faction = faction;
             Collider.points = center.noisyPoints.ToArray();
             
             ApplyFactionMaterial();

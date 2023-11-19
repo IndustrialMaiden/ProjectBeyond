@@ -4,6 +4,7 @@ using System.Linq;
 using _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Extensions;
 using _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.NoiseGenerator;
 using _CONTENT.CodeBase.Unity_delaunay.Delaunay;
+using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph
@@ -20,13 +21,13 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph
 
         private NoisyEdgesGenerator _noiseGenerator;
 
-        public Graph(IEnumerable<Vector2> points, Voronoi voronoi, int width, int height, float pointSpacing,
+        public Graph(IEnumerable<Vector2> points, Voronoi voronoi, int width, int height, RandomGenerator random, float pointSpacing,
             float noiseScale, float noiseResolution)
         {
             Width = width;
             Height = height;
 
-            _noiseGenerator = new NoisyEdgesGenerator(pointSpacing, noiseScale, noiseResolution);
+            _noiseGenerator = new NoisyEdgesGenerator(random, pointSpacing, noiseScale, noiseResolution);
 
             BuildGraph(points, voronoi);
 
@@ -419,19 +420,5 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph
             centers.AddRange(sortedCenters);
         }*/
 
-        public static IEnumerable<Vector2> RelaxPoints(IEnumerable<Vector2> startingPoints, float width, float height)
-        {
-            Voronoi v = new Voronoi(startingPoints.ToList(), null, new Rect(0, 0, width, height));
-            foreach (var point in startingPoints)
-            {
-                var region = v.Region(point);
-                point.Set(0, 0);
-                foreach (var r in region)
-                    point.Set(point.x + r.x, point.y + r.y);
-
-                point.Set(point.x / region.Count, point.y / region.Count);
-                yield return point;
-            }
-        }
     }
 }

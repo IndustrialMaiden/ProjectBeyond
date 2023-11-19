@@ -372,6 +372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963b58883a9c0b74bb7100f444ad7d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlanetIndex: 0
   Seed: 1
   _regionsCount: 15
   _width: 100

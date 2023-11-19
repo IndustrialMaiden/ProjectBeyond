@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.Graph;
+using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.NoiseGenerator
@@ -11,12 +12,12 @@ namespace _CONTENT.CodeBase.MapModule.PlanetRegionsGeneration.NoiseGenerator
         private float _noiseResolution;
         private Vector2 _noiseOffset;
 
-        public NoisyEdgesGenerator(float pointSpacing, float noiseScale, float noiseResolution)
+        public NoisyEdgesGenerator(RandomGenerator random, float pointSpacing, float noiseScale, float noiseResolution)
         {
             _pointSpacing = pointSpacing;
             _noiseScale = noiseScale;
             _noiseResolution = noiseResolution;
-            _noiseOffset = new Vector2(Random.value * 1000, Random.value * 1000);
+            _noiseOffset = new Vector2(random.value * 1000, random.value * 1000);
         }
         
         public Dictionary<NewEdge, List<Vector2>> GenerateNoisyEdges(List<NewEdge> edges)

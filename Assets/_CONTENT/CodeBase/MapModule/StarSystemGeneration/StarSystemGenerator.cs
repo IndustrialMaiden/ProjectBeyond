@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using AnnulusGames.LucidTools.RandomKit;
 using Unity.VisualScripting;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
 {
@@ -19,64 +21,68 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
         [Space]
         [SerializeField] private Vector2 _possibleSize;
         [SerializeField] private Vector2 _possibleDistance;
-        [SerializeField] private Vector2 _possibleMovingSpeed;
-
-        private List<PlanetOutside> _planets = new List<PlanetOutside>();
+        
+        private List<int> _sectorsIndexes = new List<int>();
 
         private void Start()
         {
-            System.Random random = new System.Random(); 
+            Random random = new Random(); 
             
-            Random.InitState(random.Next(0, Int32.MaxValue));
+            LucidRandom.InitState(random.Next(0, Int32.MaxValue));
             
             CreateStarSystem();
         }
 
         public void CreateStarSystem()
         {
+            var starSystem = new GameObject().AddComponent<StarSystem>(); // Наверное нужно поменять на префаб
+            starSystem.name = "StarSystem";
+            
             var systemCenter = Instantiate(_systemCenterPrefab, Vector3.zero, Quaternion.identity);
-            var starSystem = Instantiate(new GameObject().AddComponent<StarSystem>(), Vector3.zero, Quaternion.identity);
+            
             starSystem.SetSystemCenter(systemCenter);
+            
+            InitializeSectors();
 
             float totalDistance = _systemCenterPrefab.transform.localScale.x / 1.5f;
 
             for (int i = 0; i < _planetsCount; i++)
             {
-                float size = Random.Range(_possibleSize.x, _possibleSize.y);
-                float distance = Random.Range(_possibleDistance.x, _possibleDistance.y) + size / 2f;
-                float movingSpeed = Random.Range(_possibleMovingSpeed.x, _possibleMovingSpeed.y);
-                DirectionType directionType = (DirectionType) Random.Range(0, 2);
+                float size = LucidRandom.Range(_possibleSize.x, _possibleSize.y);
+                float distance = LucidRandom.Range(_possibleDistance.x, _possibleDistance.y) + size / 2f;
+                DirectionType directionType = (DirectionType) LucidRandom.Range(0, 2);
 
                 totalDistance += distance + size / 2f;
 
-                PlanetOutside planet = Instantiate(_planetPrefab, RandomizePlatenPosition(totalDistance),
+                PlanetOutside planet = Instantiate(_planetPrefab, RandomizePlanetPosition(totalDistance, i),
                     Quaternion.identity);
-                planet.Construct(i, size, totalDistance, movingSpeed, directionType, systemCenter.transform);
+                planet.Construct(i, size, totalDistance, directionType, systemCenter.transform);
                 
-                _planets.Add(planet);
                 starSystem.AddPlanet(planet);
             }
-
-            for (int i = 0; i < _planets.Count; i++)
-            {
-                if (i > 0)
-                {
-                    _planets[i].AssignNeighbours(_planets[i - 1]);
-                }
-                
-                if (i + 1 < _planets.Count)
-                {
-                    _planets[i].AssignNeighbours(_planets[i + 1]);
-                }
-                
-            }
             
+            starSystem.AssignNeighbours();
+
         }
 
-        private Vector3 RandomizePlatenPosition(float distance)
+        private void InitializeSectors()
         {
-            float angle = Random.Range(0, 2 * Mathf.PI);
-            return new Vector3(distance * Mathf.Cos(angle), distance * Mathf.Sin(angle), 0);
+            for (int i = 0; i < _planetsCount; i++)
+            {
+                _sectorsIndexes.Add(i);
+            }
+
+            var array = LucidRandom.Shuffle(_sectorsIndexes).ToArray();
+            _sectorsIndexes = array.ToList();
+        }
+        
+        private Vector3 RandomizePlanetPosition(float distance, int planetIndex)
+        {
+            float sectorSize = 2 * Mathf.PI / _planetsCount;
+            float sectorStart = sectorSize * _sectorsIndexes[planetIndex];
+            float randomAngleInSector = sectorStart + LucidRandom.Range(0, sectorSize);
+
+            return new Vector3(distance * Mathf.Cos(randomAngleInSector), distance * Mathf.Sin(randomAngleInSector), 0);
         }
 
     }
