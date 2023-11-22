@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bd52d2061954463acc6a11fed043d35, type: 3}
+  m_Name: Map Generation Parameters
+  m_EditorClassIdentifier: 
+  <PlanetsCount>k__BackingField: 6
+  <MovingSpeedScale>k__BackingField: 5
+  <PossiblePlanetSize>k__BackingField: {x: 8, y: 10}
+  <PossiblePlanetDistance>k__BackingField: {x: 2, y: 3}
+  <PlanetRegionsCount>k__BackingField: 15
+  <RegionsMapHeight>k__BackingField: 80
+  <RegionsMapWidth>k__BackingField: 100
+  <PointSpacing>k__BackingField: 2
+  <NoiseScale>k__BackingField: 5
+  <NoiseResolution>k__BackingField: 0.1
+  <StarSystemComponentPrefab>k__BackingField: {fileID: 5744260148970784955, guid: c05f086e34f531d4a97fa27eb355ed85, type: 3}
+  <SystemCenterPrefab>k__BackingField: {fileID: 4957013698555534152, guid: b7a24b31427a04c4d8705f7ea25a3d07, type: 3}
+  <PlanetFarPrefab>k__BackingField: {fileID: 8181878328796977078, guid: f6c569eb31dff2c49a8afb6f4c2ad842, type: 3}
+  <PlanetNearPrefab>k__BackingField: {fileID: 7582010688218532255, guid: b00b01a5e441d2e459c9a32d21f08381, type: 3}
+  <PlanetRegionPrefab>k__BackingField: {fileID: 2717237849279735054, guid: bbb315b8765d8124a96eaa3cb5ab96d9, type: 3}

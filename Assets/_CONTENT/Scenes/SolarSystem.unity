@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1021501317
+--- !u!1 &1885690982
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,22 +131,68 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1021501318}
-  - component: {fileID: 1021501319}
+  - component: {fileID: 1885690985}
+  - component: {fileID: 1885690984}
+  - component: {fileID: 1885690983}
   m_Layer: 0
-  m_Name: StarSystemGenerator
+  m_Name: SceneContext
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1021501318
+--- !u!114 &1885690983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885690982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47080814570406a9cc6c58fbd6a4ade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starSystemGenerationParams: {fileID: 11400000, guid: 9be0abd7b0aca0142bcc0b6ddc4c6c82, type: 2}
+--- !u!114 &1885690984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885690982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 1885690983}
+  _installerPrefabs: []
+  _autoRun: 1
+  OnPreInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  _parentNewObjectsUnderSceneContext: 0
+  _contractNames: []
+  _parentContractNames: []
+--- !u!4 &1885690985
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021501317}
+  m_GameObject: {fileID: 1885690982}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -155,25 +201,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1021501319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021501317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1204e66a15b487d96597a11123b17df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _planetPrefab: {fileID: 8181878328796977078, guid: 420ae3004ced49143a605bc3e148ebf1, type: 3}
-  _systemCenterPrefab: {fileID: 3631239336064652656, guid: e2b066c9cf37ce043a384cdf9ec2f349, type: 3}
-  _planetsCount: 6
-  _movingSpeedScale: 0
-  _possibleSize: {x: 5, y: 8}
-  _possibleDistance: {x: 3, y: 5}
-  _possibleMovingSpeed: {x: 1, y: 2}
 --- !u!1 &1987898511
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,4 +426,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 1987898515}
   - {fileID: 2004236800}
-  - {fileID: 1021501318}
+  - {fileID: 1885690985}

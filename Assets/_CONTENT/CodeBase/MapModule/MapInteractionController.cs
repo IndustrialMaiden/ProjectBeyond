@@ -1,4 +1,4 @@
-﻿using _CONTENT.CodeBase.MapModule.Planetary;
+﻿using _CONTENT.CodeBase.MapModule.StarSystem;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule
