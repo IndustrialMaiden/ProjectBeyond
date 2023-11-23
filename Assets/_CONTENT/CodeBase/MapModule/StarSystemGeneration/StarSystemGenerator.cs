@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _CONTENT.CodeBase.Infrastructure.Factory;
 using _CONTENT.CodeBase.MapModule.StarSystem;
+using _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration;
 using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
@@ -72,6 +73,8 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
                 planet.Construct(i, size, _genParams.MovingSpeedScale, directionType, systemCenter.transform);
 
                 starSystemComponent.AddPlanet(planet);
+
+                _mapFactory.CreatePlanetOrbit(planet.Distance).gameObject.name = $"Orbit {i}";
 
                 _planetNearGen.GenerateNearPlanet(i);
             }

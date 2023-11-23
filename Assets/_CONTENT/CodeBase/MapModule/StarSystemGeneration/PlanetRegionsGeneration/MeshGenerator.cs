@@ -5,30 +5,13 @@ using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration
 {
-	[RequireComponent(typeof (Region))]
-	[RequireComponent (typeof (PolygonCollider2D))]
-	[RequireComponent (typeof (MeshRenderer))]
-	[RequireComponent (typeof (MeshFilter))]
-
-	public class PolygonMesh2D : MonoBehaviour 
+	public static class MeshGenerator 
 	{
-		protected PolygonCollider2D polygon;
-		protected MeshFilter meshFilter;
+		private static float zPosition = 0f;
 
-		private int pathIndex = 0;
-		private float zPosition = 0f;
-
-		public void CreateMesh() 
+		public static Mesh CreatePolygonMesh(Vector2[] colliderPath)
 		{
-			polygon = gameObject.GetComponent<PolygonCollider2D>();
-			meshFilter = gameObject.GetComponent<MeshFilter>();
-		
-			Create();
-		} 
-
-		private void Create() 
-		{
-			Vector2[] path = polygon.GetPath(pathIndex);
+			Vector2[] path = colliderPath;
 			Mesh msh = new Mesh();
 
 			msh.vertices = path.Select(v => new Vector3(v.x, v.y, zPosition)).ToArray();
@@ -36,11 +19,44 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
 
 			msh.RecalculateNormals();
 			msh.RecalculateBounds();
-			meshFilter.mesh = msh;
 
 			Bounds bounds = msh.bounds;
 
 			msh.uv = path.Select(v => new Vector2(v.x / bounds.size.x, v.y / bounds.size.y)).ToArray();
+			
+			return msh;
+		}
+		
+		public static Mesh CreateCircleMesh()
+		{
+			var numOfPoints = 64;
+
+			float angleStep = 360.0f / (float) numOfPoints;
+			List<Vector3> vertexList = new List<Vector3>();
+			List<int> triangleList = new List<int>();
+			Quaternion quaternion = Quaternion.Euler(0.0f, 0.0f, angleStep);
+			// Make first triangle.
+			vertexList.Add(new Vector3(0.0f, 0.0f, 0.0f)); // 1. Circle center.
+			vertexList.Add(new Vector3(0.0f, 0.5f, 0.0f)); // 2. First vertex on circle outline (radius = 0.5f)
+			vertexList.Add(quaternion * vertexList[1]); // 3. First vertex on circle outline rotated by angle)
+			// Add triangle indices.
+			triangleList.Add(0);
+			triangleList.Add(1);
+			triangleList.Add(2);
+			for (int i = 0; i < numOfPoints - 1; i++)
+			{
+				triangleList.Add(0); // Index of circle center.
+				triangleList.Add(vertexList.Count - 1);
+				triangleList.Add(vertexList.Count);
+				vertexList.Add(quaternion * vertexList[vertexList.Count - 1]);
+			}
+
+			Mesh mesh = new Mesh();
+			mesh.SetVertices(vertexList);
+			mesh.triangles = triangleList.ToArray();
+			mesh.RecalculateBounds();
+
+			return mesh;
 		}
 	}
 

@@ -1,4 +1,5 @@
 ﻿using _CONTENT.CodeBase.Infrastructure.Factory;
+using _CONTENT.CodeBase.Infrastructure.MouseInteraction;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration;
 using UnityEngine;
@@ -13,8 +14,15 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
         public override void InstallBindings()
         {
             BindGenerationParameters();
-            Container.BindInterfacesAndSelfTo<PlanetNearGenerator>().AsTransient();
+            BindGenerators();
             BindMapFactory();
+            BindMouseEventSystem();
+            BindMouseEventHandler();
+        }
+
+        private void BindGenerators()
+        {
+            Container.BindInterfacesAndSelfTo<PlanetNearGenerator>().AsTransient();
             Container.BindInterfacesAndSelfTo<StarSystemGenerator>().AsSingle().NonLazy();
         }
 
@@ -33,6 +41,18 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
                 .To<MapFactory>()
                 .AsSingle()
                 .NonLazy();
+        }
+
+        private void BindMouseEventSystem()
+        {
+            Container.BindInterfacesAndSelfTo<MouseEventSystem>()
+                .AsSingle()
+                .NonLazy();
+        }
+
+        private void BindMouseEventHandler()
+        {
+            Container.Bind<MouseEventHandler>().AsSingle().NonLazy();
         }
     }
 }

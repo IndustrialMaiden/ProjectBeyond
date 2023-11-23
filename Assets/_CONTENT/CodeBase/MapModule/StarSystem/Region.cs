@@ -10,13 +10,13 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
     {
         [SerializeField] private LineRenderer _selection;
         [SerializeField] private PolygonCollider2D _collider;
+        [SerializeField] private MeshFilter _meshFilter;
         [SerializeField] private MeshRenderer _meshRenderer;
-        [SerializeField] private PolygonMesh2D _meshCreator;
         public int Index { get; private set; }
         public Vector2 Center { get; private set; }
         public Faction Faction { get; private set; }
         public List<Region> Neighbours { get; } = new List<Region>();
-        public Vector3[] SelectionPath { get; private set; }
+        public Vector2[] V2ColliderPositions { get; private set; }
 
 
         public void Construct(Center center, Faction faction)
@@ -25,11 +25,11 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
             Center = center.point;
             gameObject.name = $"Region {Index}";
             Faction = faction;
-            _collider.points = center.noisyPoints.ToArray();
-            _meshCreator.CreateMesh();
-            
-            ApplyFactionMaterial();
+            _collider.points = V2ColliderPositions = center.noisyPoints.ToArray();
+            _meshFilter.mesh = MeshGenerator.CreatePolygonMesh(V2ColliderPositions);
+
             CreateBorder();
+            ApplyFactionMaterial();
         }
 
         public void AddNeighbour(Region region)
@@ -68,27 +68,20 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
 
         private void CreateBorder()
         {
-            var colliderPositions = _collider.GetPath(0);
+            Vector3[] v3ColliderPositions = new Vector3[V2ColliderPositions.Length];
             
-            Vector3[] linePositions = new Vector3[colliderPositions.Length];
-            Vector3[] selectionPositions = new Vector3[colliderPositions.Length];
-            
-            for (int i = 0; i < colliderPositions.Length; i++)
+            for (int i = 0; i < V2ColliderPositions.Length; i++)
             {
-                linePositions[i] = new Vector3(colliderPositions[i].x, colliderPositions[i].y, -0.5f);
-                selectionPositions[i] = new Vector3(colliderPositions[i].x, colliderPositions[i].y, -1f);
+                v3ColliderPositions[i] = V2ColliderPositions[i];
             }
-
-            SelectionPath = selectionPositions;
 
             var border = GetComponent<LineRenderer>();
             
-            border.positionCount = linePositions.Length;
-            border.SetPositions(linePositions);
+            border.positionCount = v3ColliderPositions.Length;
+            border.SetPositions(v3ColliderPositions);
 
-            _selection.positionCount = SelectionPath.Length;
-            _selection.SetPositions(SelectionPath);
-
+            _selection.positionCount = v3ColliderPositions.Length;
+            _selection.SetPositions(v3ColliderPositions);
         }
     }
 }

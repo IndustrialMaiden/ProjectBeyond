@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using _CONTENT.CodeBase.Infrastructure.Services.Progress;
-using _CONTENT.CodeBase.MapModule;
 using _CONTENT.CodeBase.MapModule.StarSystem;
+using _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration;
 using UnityEngine;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace _CONTENT.CodeBase.Infrastructure.Factory
 {
@@ -48,6 +49,14 @@ namespace _CONTENT.CodeBase.Infrastructure.Factory
             (_genParams.PlanetFarPrefab, at, Quaternion.identity, _starSystemComponent.gameObject.transform);
             RegisterProgressWatchers(planetFar.gameObject);
             return planetFar;
+        }
+
+        public PlanetOrbitDrawer CreatePlanetOrbit(float distance)
+        {
+            var planetOrbitDrawer = Object.Instantiate
+            (_genParams.OrbitPrefab, Vector3.zero, Quaternion.identity, _starSystemComponent.transform);
+            planetOrbitDrawer.Construct(distance);
+            return planetOrbitDrawer;
         }
 
         public PlanetNear CreatePlanetNear()

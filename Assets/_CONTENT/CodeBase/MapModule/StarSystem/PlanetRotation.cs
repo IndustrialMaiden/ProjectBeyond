@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects;
+using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystem
 {
@@ -9,11 +10,14 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
 
         private float _speed;
         private float _speedScale;
+        private float _distance;
         private DirectionType _directionType;
-        
+
+        public float HorizontalAxis => _horizontalAxis;
         private float _horizontalAxis;
+        public float VerticalAxis => _verticalAxis;
         private float _verticalAxis;
-        
+
         private float _angle;
 
         private void Start()
@@ -21,6 +25,7 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
             PlanetFar planet = GetComponent<PlanetFar>();
             
             _gravityCenterPosition = planet.GravityCenter.position;
+            _distance = planet.Distance;
             _directionType = planet.DirectionType;
             _speedScale = planet.MovingSpeedScale;
             
@@ -45,18 +50,16 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
 
         private float CalculateOrbitalSpeed()
         {
-            var distance = Vector3.Distance(_gravityCenterPosition, transform.position);
+            if (_distance <= 0) return 0;
             
-            if (distance <= 0) return 0;
-            
-            _horizontalAxis = distance;
-            _verticalAxis = distance / 2;
+            _horizontalAxis = _distance;
+            _verticalAxis = _distance / 2;
             
             float speedCoefficient = 5f;
 
             var direction = _directionType == DirectionType.Clockwise ? -1 : 1;
             
-            return speedCoefficient / distance * direction * _speedScale;
+            return speedCoefficient / _distance * direction * _speedScale;
         }
     }
 }

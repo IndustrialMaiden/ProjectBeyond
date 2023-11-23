@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 220403336247851522}
   - component: {fileID: -8394412578269587614}
   - component: {fileID: -3840540969664659487}
-  - component: {fileID: 4325530080090128220}
   - component: {fileID: -1952596389489449570}
   m_Layer: 0
   m_Name: PlanetRegion
@@ -53,8 +52,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selection: {fileID: -1952596389489449570}
   _collider: {fileID: 220403336247851522}
+  _meshFilter: {fileID: -8394412578269587614}
   _meshRenderer: {fileID: -3840540969664659487}
-  _meshCreator: {fileID: 4325530080090128220}
 --- !u!60 &220403336247851522
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -155,18 +154,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4325530080090128220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7757686431848895311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a398e5f85ad08a04cb634817b4103ec8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!120 &-1952596389489449570
 LineRenderer:
   serializedVersion: 2
@@ -208,7 +195,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
@@ -279,6 +266,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2472770175785796323}
     m_Modifications:
+    - target: {fileID: 703761298354805336, guid: e5ba9999e1218784f8b34f767ce0d1a1, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3945536692445945861, guid: e5ba9999e1218784f8b34f767ce0d1a1, type: 3}
       propertyPath: m_RootOrder
       value: 3

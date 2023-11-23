@@ -1,9 +1,10 @@
 ﻿using _CONTENT.CodeBase.MapModule.StarSystem;
+using _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
 {
-    [CreateAssetMenu(fileName = "Map Generation Parameters", menuName = "Generation/MapGenerationParameters", order = 0)]
+    [CreateAssetMenu(fileName = "Start System Generation Parameters", menuName = "Generation/StarSystemGenerationParameters", order = 0)]
     public class StarSystemGenerationParams : ScriptableObject
     {
         [field: Header("Star System"), Space]
@@ -25,6 +26,7 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
         
         [field: Header("Prefabs"), Space]
         [field: SerializeField] public StarSystemComponent StarSystemComponentPrefab { get; private set; }
+        [field: SerializeField] public PlanetOrbitDrawer OrbitPrefab { get; private set; }
         [field: SerializeField] public SystemCenter SystemCenterPrefab { get; private set; }
         [field: SerializeField] public PlanetFar PlanetFarPrefab { get; private set; }
         [field: SerializeField] public PlanetNear PlanetNearPrefab { get; private set; }

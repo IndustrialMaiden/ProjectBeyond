@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Map Generation Parameters
   m_EditorClassIdentifier: 
   <PlanetsCount>k__BackingField: 6
-  <MovingSpeedScale>k__BackingField: 5
+  <MovingSpeedScale>k__BackingField: 0.2
   <PossiblePlanetSize>k__BackingField: {x: 8, y: 10}
   <PossiblePlanetDistance>k__BackingField: {x: 2, y: 3}
   <PlanetRegionsCount>k__BackingField: 15
@@ -23,6 +23,7 @@ MonoBehaviour:
   <NoiseScale>k__BackingField: 5
   <NoiseResolution>k__BackingField: 0.1
   <StarSystemComponentPrefab>k__BackingField: {fileID: 5744260148970784955, guid: c05f086e34f531d4a97fa27eb355ed85, type: 3}
+  <OrbitPrefab>k__BackingField: {fileID: 8511502667398481190, guid: 8a395209b332f6741a6e5b288d2a5446, type: 3}
   <SystemCenterPrefab>k__BackingField: {fileID: 4957013698555534152, guid: b7a24b31427a04c4d8705f7ea25a3d07, type: 3}
   <PlanetFarPrefab>k__BackingField: {fileID: 8181878328796977078, guid: f6c569eb31dff2c49a8afb6f4c2ad842, type: 3}
   <PlanetNearPrefab>k__BackingField: {fileID: 7582010688218532255, guid: b00b01a5e441d2e459c9a32d21f08381, type: 3}
