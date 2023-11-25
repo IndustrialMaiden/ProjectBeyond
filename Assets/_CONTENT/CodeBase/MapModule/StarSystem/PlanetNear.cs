@@ -5,23 +5,23 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
 {
     public class PlanetNear : MonoBehaviour
     {
-        public int PlanetIndex { get; private set; }
+        public int Index { get; private set; }
         
         private List<Region> _regions = new List<Region>();
 
-        public void SetIndex(int planetIndex)
-        {
-            PlanetIndex = planetIndex;
-        }
+        public void Activate() => 
+            gameObject.SetActive(true);
+        
+        public void Deactivate() => 
+            gameObject.SetActive(false);
 
-        public void AddRegion(Region region)
-        {
+        public void SetIndex(int planetIndex) => 
+            Index = planetIndex;
+
+        public void AddRegion(Region region) => 
             _regions.Add(region);
-        }
 
-        public List<Region> GetRegions()
-        {
-            return _regions;
-        }
+        public List<Region> GetRegions() => 
+            _regions;
     }
 }

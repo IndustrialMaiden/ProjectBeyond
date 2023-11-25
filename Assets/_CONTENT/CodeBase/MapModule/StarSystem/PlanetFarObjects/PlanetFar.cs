@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using _CONTENT.CodeBase.Infrastructure.MouseInteraction;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration;
 using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects
 {
-    public class PlanetFar : MonoBehaviour
+    public class PlanetFar : MonoBehaviour, IClickable
     {
         [SerializeField] private CircleCollider2D _collider;
         [SerializeField] private MeshRenderer _meshRenderer;

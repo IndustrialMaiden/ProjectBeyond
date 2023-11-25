@@ -8,6 +8,7 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
     public class StarSystemGenerationParams : ScriptableObject
     {
         [field: Header("Star System"), Space]
+        [field: SerializeField] public Vector3 StarSystemCoordinates { get; private set; }
         [field: SerializeField] public int PlanetsCount { get; private set; } 
         [field: SerializeField, Range(0, 5f)] public float MovingSpeedScale { get; private set; } 
         [field: SerializeField] public Vector2 PossiblePlanetSize { get; private set; }

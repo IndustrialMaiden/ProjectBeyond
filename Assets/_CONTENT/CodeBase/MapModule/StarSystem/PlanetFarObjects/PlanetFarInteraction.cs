@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects
 {
-    public class PlanetFarSelection : MonoBehaviour, ISelectable
+    public class PlanetFarInteraction : MonoBehaviour, ISelectable
     {
         public void OnMouseOverSelectable()
         {

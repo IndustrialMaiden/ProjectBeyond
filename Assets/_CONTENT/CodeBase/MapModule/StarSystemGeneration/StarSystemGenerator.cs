@@ -17,14 +17,16 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
         private StarSystemGenerationParams _genParams;
         private IMapFactory _mapFactory;
         private PlanetNearGenerator _planetNearGen;
+        private MapSceneData _mapSceneData;
         
         private List<int> _sectorsIndexes = new List<int>();
 
-        public StarSystemGenerator(StarSystemGenerationParams genParams, IMapFactory mapFactory, PlanetNearGenerator planetNearGen)
+        public StarSystemGenerator(StarSystemGenerationParams genParams, IMapFactory mapFactory, PlanetNearGenerator planetNearGen, MapSceneData mapSceneData)
         {
             _genParams = genParams;
             _mapFactory = mapFactory;
             _planetNearGen = planetNearGen;
+            _mapSceneData = mapSceneData;
         }
 
         public void Initialize()
@@ -51,9 +53,13 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
             
             InitializeSectors();
 
+
             CreatePlanets(systemCenter, starSystemComponent);
 
             starSystemComponent.AssignNeighbours();
+            
+            starSystemComponent.transform.position = _genParams.StarSystemCoordinates;
+
 
         }
 
@@ -70,8 +76,11 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
                 totalDistance += distance + size;
 
                 PlanetFar planet = _mapFactory.CreatePlanetFar(RandomizePlanetPosition(totalDistance, i));
-                planet.Construct(i, size, _genParams.MovingSpeedScale, directionType, systemCenter.transform);
 
+
+                planet.Construct(i, size, _genParams.MovingSpeedScale, directionType, systemCenter.transform);
+                
+                _mapSceneData.AddPlanetFar(planet);
                 starSystemComponent.AddPlanet(planet);
 
                 _mapFactory.CreatePlanetOrbit(planet.Distance).gameObject.name = $"Orbit {i}";

@@ -10,14 +10,14 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
         public event Action<ISelectable> OnMouseExitEvent;
         public event Action<IClickable> OnMouseLeftClickEvent;
         public event Action<IClickable> OnMouseRightClickEvent;
+        public event Action OnMouseRightClickNoHitEvent;
+
 
         private const string InteractableLayerName = "Interactable";
 
         private GameObject lastHitObject;
         public LayerMask interactionLayer;
         private float maxRaycastDistance = 10f;
-        private float raycastInterval = 0.1f; // Интервал между Raycast-ами
-        private float timeSinceLastRaycast;
 
         public MouseEventSystem()
         {
@@ -26,25 +26,26 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
 
         public void Tick()
         {
-            timeSinceLastRaycast += Time.deltaTime;
-            if (timeSinceLastRaycast >= raycastInterval)
-            {
-                PerformRaycast();
-                timeSinceLastRaycast = 0f;
-            }
+            PerformRaycast();
         }
 
         private void PerformRaycast()
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, maxRaycastDistance, interactionLayer);
-            
+
 
             if (hit.collider != null)
             {
                 GameObject hitObject = hit.collider.gameObject;
                 HandleRaycastHit(hitObject);
             }
+            
+            else if (hit.collider == null && Input.GetMouseButtonDown(1)) // Правая кнопка мыши
+            {
+                OnMouseRightClickNoHitEvent?.Invoke();
+            }
+
             else if (lastHitObject != null)
             {
                 HandleRaycastMiss();
@@ -77,6 +78,7 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
             ProcessMouseClick(hitObject, 1); // Правая кнопка мыши
         }
 
+
         private void HandleRaycastMiss()
         {
             ISelectable lastSelectable = lastHitObject.GetComponent<ISelectable>();
@@ -90,17 +92,28 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
 
         private void ProcessMouseClick(GameObject hitObject, int mouseButton)
         {
-            IClickable clickable = hitObject.GetComponent<IClickable>();
-            if (clickable == null) return;
+            IClickable clickable = hitObject ? hitObject.GetComponent<IClickable>() : null;
 
-            if (Input.GetMouseButtonDown(mouseButton))
+            if (mouseButton == 0 && Input.GetMouseButtonDown(mouseButton)) // Левая кнопка мыши
             {
-                OnMouseLeftClickEvent?.Invoke(clickable);
+                if (clickable != null)
+                {
+                    OnMouseLeftClickEvent?.Invoke(clickable);
+                }
             }
-            else if (Input.GetMouseButtonDown(mouseButton))
+            else if (mouseButton == 1 && Input.GetMouseButtonDown(mouseButton)) // Правая кнопка мыши
             {
-                OnMouseRightClickEvent?.Invoke(clickable);
+                if (clickable != null)
+                {
+                    OnMouseRightClickEvent?.Invoke(clickable);
+                }
+                else
+                {
+                    // Правая кнопка мыши нажата, но объект не реализует IClickable
+                    OnMouseRightClickNoHitEvent?.Invoke();
+                }
             }
         }
+
     }
 }

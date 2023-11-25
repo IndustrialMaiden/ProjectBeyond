@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using _CONTENT.CodeBase.Infrastructure.MouseInteraction;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration.GraphObjects;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystem
 {
-    public class Region : MonoBehaviour
+    public class Region : MonoBehaviour, ISelectable
     {
         [SerializeField] private LineRenderer _selection;
         [SerializeField] private PolygonCollider2D _collider;
@@ -17,6 +18,8 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
         public Faction Faction { get; private set; }
         public List<Region> Neighbours { get; } = new List<Region>();
         public Vector2[] V2ColliderPositions { get; private set; }
+
+        private bool _isSelectionActive;
 
 
         public void Construct(Center center, Faction faction)
@@ -82,6 +85,22 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
 
             _selection.positionCount = v3ColliderPositions.Length;
             _selection.SetPositions(v3ColliderPositions);
+        }
+
+        public void OnMouseOverSelectable()
+        {
+            if (_isSelectionActive) return;
+            
+            ActivateSelection(true);
+            _isSelectionActive = true;
+        }
+
+        public void OnMouseExitSelectable()
+        {
+            if (!_isSelectionActive) return;
+            
+            ActivateSelection(false);
+            _isSelectionActive = false;
         }
     }
 }

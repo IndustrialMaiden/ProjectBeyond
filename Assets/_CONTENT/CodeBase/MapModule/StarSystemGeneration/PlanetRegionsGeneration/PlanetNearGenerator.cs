@@ -10,13 +10,16 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
     {
         private StarSystemGenerationParams _genParams;
         private IMapFactory _mapFactory;
-        private PlanetaryMap _planetaryMap;
+        private MapSceneData _mapSceneData;
         
+        
+        private PlanetaryMap _planetaryMap;
 
-        public PlanetNearGenerator(StarSystemGenerationParams genParams, IMapFactory mapFactory)
+        public PlanetNearGenerator(StarSystemGenerationParams genParams, IMapFactory mapFactory, MapSceneData mapSceneData)
         {
             _genParams = genParams;
             _mapFactory = mapFactory;
+            _mapSceneData = mapSceneData;
         }
 
 
@@ -33,6 +36,7 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
 
             PlanetNear planetNear = _mapFactory.CreatePlanetNear();
             planetNear.SetIndex(planetIndex);
+            planetNear.gameObject.name = $"Planet Near {planetIndex}";
 
             foreach (var center in _planetaryMap.Graph.centers)
             {
@@ -47,6 +51,8 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
             {
                 AssignNeighbors(region, _planetaryMap.Graph.centers[region.Index], planetNear);
             }
+            
+            _mapSceneData.AddPlanetNear(planetNear);
         }
 
         private void AssignNeighbors(Region region, Center center, PlanetNear planetNear)

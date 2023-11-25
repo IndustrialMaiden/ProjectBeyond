@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd52d2061954463acc6a11fed043d35, type: 3}
   m_Name: Map Generation Parameters
   m_EditorClassIdentifier: 
+  <StarSystemCoordinates>k__BackingField: {x: -150, y: 40, z: 1}
   <PlanetsCount>k__BackingField: 6
   <MovingSpeedScale>k__BackingField: 0.2
   <PossiblePlanetSize>k__BackingField: {x: 8, y: 10}
   <PossiblePlanetDistance>k__BackingField: {x: 2, y: 3}
   <PlanetRegionsCount>k__BackingField: 15
   <RegionsMapHeight>k__BackingField: 80
-  <RegionsMapWidth>k__BackingField: 100
+  <RegionsMapWidth>k__BackingField: 140
   <PointSpacing>k__BackingField: 2
   <NoiseScale>k__BackingField: 5
   <NoiseResolution>k__BackingField: 0.1
