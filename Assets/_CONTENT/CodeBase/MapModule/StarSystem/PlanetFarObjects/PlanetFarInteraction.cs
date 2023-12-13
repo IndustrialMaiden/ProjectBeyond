@@ -7,12 +7,10 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects
     {
         public void OnMouseOverSelectable()
         {
-            Debug.Log($"Enter {gameObject.name}");
         }
 
         public void OnMouseExitSelectable()
         {
-            Debug.Log($"Exit {gameObject.name}");
         }
     }
 }

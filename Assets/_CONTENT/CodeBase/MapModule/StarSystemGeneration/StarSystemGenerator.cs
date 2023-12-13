@@ -5,6 +5,7 @@ using _CONTENT.CodeBase.Infrastructure.Factory;
 using _CONTENT.CodeBase.MapModule.StarSystem;
 using _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration;
+using _CONTENT.CodeBase.StaticData;
 using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
 using Zenject;
@@ -58,7 +59,7 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
 
             starSystemComponent.AssignNeighbours();
             
-            starSystemComponent.transform.position = _genParams.StarSystemCoordinates;
+            starSystemComponent.transform.position = _genParams.StarSystemCenter;
 
 
         }
@@ -77,8 +78,9 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
 
                 PlanetFar planet = _mapFactory.CreatePlanetFar(RandomizePlanetPosition(totalDistance, i));
 
+                Material planetMaterial = PlanetMatRandomizer.GetMaterial(_genParams);
 
-                planet.Construct(i, size, _genParams.MovingSpeedScale, directionType, systemCenter.transform);
+                planet.Construct(i, size, _genParams.MovingSpeedScale, directionType, systemCenter.transform, planetMaterial);
                 
                 _mapSceneData.AddPlanetFar(planet);
                 starSystemComponent.AddPlanet(planet);

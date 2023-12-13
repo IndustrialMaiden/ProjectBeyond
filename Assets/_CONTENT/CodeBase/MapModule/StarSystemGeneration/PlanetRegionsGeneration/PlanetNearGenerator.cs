@@ -1,6 +1,7 @@
 using _CONTENT.CodeBase.Infrastructure.Factory;
 using _CONTENT.CodeBase.MapModule.StarSystem;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration.GraphObjects;
+using _CONTENT.CodeBase.StaticData;
 using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
 

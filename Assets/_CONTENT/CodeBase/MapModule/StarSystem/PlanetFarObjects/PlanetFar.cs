@@ -27,11 +27,8 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects
         
         private Transform _gravityCenter;
         public Transform GravityCenter => _gravityCenter;
-        
 
-        //PlanetType
-
-        public void Construct(int index, float size, float movingSpeedScale, DirectionType directionType, Transform gravityCenter)
+        public void Construct(int index, float size, float movingSpeedScale, DirectionType directionType, Transform gravityCenter, Material planetMaterial)
         {
             Index = index;
             _size = size;
@@ -46,10 +43,12 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects
 
             GetComponent<MeshFilter>().mesh = MeshGenerator.CreateCircleMesh();
 
-            _meshRenderer.material.color = LucidRandom.ColorHSV();
+            _meshRenderer.material = planetMaterial;
 
             GetComponent<PlanetRotation>().enabled = true;
         }
+        
+        
 
         public void AssignNeighbours(PlanetFar planet)
         {

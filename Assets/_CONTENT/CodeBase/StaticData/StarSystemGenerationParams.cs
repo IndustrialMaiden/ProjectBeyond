@@ -2,13 +2,16 @@
 using _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects;
 using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
+namespace _CONTENT.CodeBase.StaticData
 {
-    [CreateAssetMenu(fileName = "Start System Generation Parameters", menuName = "Generation/StarSystemGenerationParameters", order = 0)]
+    [CreateAssetMenu(fileName = "Start System Generation Parameters", menuName = "Static Data/StarSystemGenerationParameters", order = 0)]
     public class StarSystemGenerationParams : ScriptableObject
     {
+        public Vector3 StarSystemCenter => 
+            new Vector3(RegionsMapWidth / 2, RegionsMapHeight / 2, 1) + new Vector3(-300, 0, 0);
+        public Vector3 PlanetaryRegionsCenter => new Vector3(RegionsMapWidth / 2, RegionsMapHeight / 2, 1);
+        
         [field: Header("Star System"), Space]
-        [field: SerializeField] public Vector3 StarSystemCoordinates { get; private set; }
         [field: SerializeField] public int PlanetsCount { get; private set; } 
         [field: SerializeField, Range(0, 5f)] public float MovingSpeedScale { get; private set; } 
         [field: SerializeField] public Vector2 PossiblePlanetSize { get; private set; }
@@ -32,6 +35,17 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
         [field: SerializeField] public PlanetFar PlanetFarPrefab { get; private set; }
         [field: SerializeField] public PlanetNear PlanetNearPrefab { get; private set; }
         [field: SerializeField] public Region PlanetRegionPrefab { get; private set; }
+        
+        [field: Header("Materials"), Space]
+        
+        [field: SerializeField] public Material PlanetMaterialType1 { get; private set; }
+        [field: SerializeField] public Material PlanetMaterialType2 { get; private set; }
+        
+        [field: Header("Planet Gradients"), Space]
+        
+        [field: SerializeField] public GradientsCollection PlanetGradients { get; private set; }
+
+        
         
         
         

@@ -15,13 +15,13 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
 
         private const string InteractableLayerName = "Interactable";
 
-        private GameObject lastHitObject;
-        public LayerMask interactionLayer;
-        private float maxRaycastDistance = 10f;
+        private GameObject _lastHitObject;
+        private LayerMask _interactionLayer;
+        private float maxRaycastDistance = 15f;
 
         public MouseEventSystem()
         {
-            interactionLayer = LayerMask.GetMask(InteractableLayerName);
+            _interactionLayer = LayerMask.GetMask(InteractableLayerName);
         }
 
         public void Tick()
@@ -32,7 +32,7 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
         private void PerformRaycast()
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, maxRaycastDistance, interactionLayer);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, maxRaycastDistance, _interactionLayer);
 
 
             if (hit.collider != null)
@@ -41,12 +41,12 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
                 HandleRaycastHit(hitObject);
             }
             
-            else if (hit.collider == null && Input.GetMouseButtonDown(1)) // Правая кнопка мыши
+            else if (hit.collider == null && Input.GetMouseButtonDown(1))
             {
                 OnMouseRightClickNoHitEvent?.Invoke();
             }
 
-            else if (lastHitObject != null)
+            else if (_lastHitObject != null)
             {
                 HandleRaycastMiss();
             }
@@ -54,11 +54,11 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
 
         private void HandleRaycastHit(GameObject hitObject)
         {
-            if (lastHitObject != hitObject)
+            if (_lastHitObject != hitObject)
             {
-                if (lastHitObject != null)
+                if (_lastHitObject != null)
                 {
-                    ISelectable lastSelectable = lastHitObject.GetComponent<ISelectable>();
+                    ISelectable lastSelectable = _lastHitObject.GetComponent<ISelectable>();
                     if (lastSelectable != null)
                     {
                         OnMouseExitEvent?.Invoke(lastSelectable);
@@ -71,37 +71,37 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
                     OnMouseOverEvent?.Invoke(selectable);
                 }
 
-                lastHitObject = hitObject;
+                _lastHitObject = hitObject;
             }
 
-            ProcessMouseClick(hitObject, 0); // Левая кнопка мыши
-            ProcessMouseClick(hitObject, 1); // Правая кнопка мыши
+            ProcessMouseClick(hitObject, 0);
+            ProcessMouseClick(hitObject, 1);
         }
 
 
         private void HandleRaycastMiss()
         {
-            ISelectable lastSelectable = lastHitObject.GetComponent<ISelectable>();
+            ISelectable lastSelectable = _lastHitObject.GetComponent<ISelectable>();
             if (lastSelectable != null)
             {
                 OnMouseExitEvent?.Invoke(lastSelectable);
             }
 
-            lastHitObject = null;
+            _lastHitObject = null;
         }
 
         private void ProcessMouseClick(GameObject hitObject, int mouseButton)
         {
             IClickable clickable = hitObject ? hitObject.GetComponent<IClickable>() : null;
 
-            if (mouseButton == 0 && Input.GetMouseButtonDown(mouseButton)) // Левая кнопка мыши
+            if (mouseButton == 0 && Input.GetMouseButtonDown(mouseButton))
             {
                 if (clickable != null)
                 {
                     OnMouseLeftClickEvent?.Invoke(clickable);
                 }
             }
-            else if (mouseButton == 1 && Input.GetMouseButtonDown(mouseButton)) // Правая кнопка мыши
+            else if (mouseButton == 1 && Input.GetMouseButtonDown(mouseButton))
             {
                 if (clickable != null)
                 {
@@ -109,7 +109,6 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
                 }
                 else
                 {
-                    // Правая кнопка мыши нажата, но объект не реализует IClickable
                     OnMouseRightClickNoHitEvent?.Invoke();
                 }
             }

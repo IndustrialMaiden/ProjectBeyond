@@ -3,6 +3,7 @@ using _CONTENT.CodeBase.Infrastructure.Services.Progress;
 using _CONTENT.CodeBase.MapModule.StarSystem;
 using _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration;
+using _CONTENT.CodeBase.StaticData;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;

@@ -1,5 +1,7 @@
 ﻿using System;
 using _CONTENT.CodeBase.MapModule.StarSystem;
+using _CONTENT.CodeBase.MapModule.StarSystemGeneration;
+using _CONTENT.CodeBase.StaticData;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,21 +15,23 @@ namespace _CONTENT.CodeBase.MapModule.CameraControl
         [SerializeField] private CinemachineVirtualCamera _planetaryCamera;
 
         private MapSceneData _mapSceneData;
-
-        //ВЫРЕЗАТЬ
-        private Color _mainCameraColor;
+        private StarSystemGenerationParams _genParams;
         
 
         [Inject]
-        public void Construct(MapSceneData mapSceneData)
+        public void Construct(MapSceneData mapSceneData, StarSystemGenerationParams genParams)
         {
             _mapSceneData = mapSceneData;
+            _genParams = genParams;
         }
-        
-        //ВЫРЕЗАТЬ
+
         private void Start()
         {
-            _mainCameraColor = Camera.main.backgroundColor;
+            _starSystemCamera.transform.position = new Vector3(_genParams.StarSystemCenter.x,
+                _genParams.StarSystemCenter.y, _starSystemCamera.transform.position.z);
+            
+            _planetaryCamera.transform.position = new Vector3(_genParams.PlanetaryRegionsCenter.x,
+                _genParams.PlanetaryRegionsCenter.y, _planetaryCamera.transform.position.z);
         }
 
         public bool IsPlanetaryCameraActive { get; private set; }
@@ -38,11 +42,7 @@ namespace _CONTENT.CodeBase.MapModule.CameraControl
             if (IsPlanetaryCameraActive) return;
 
             _activePlanet = _mapSceneData.GetPlanetNear(planetFarIndex);
-            
-            //Изменение цвета для демо - потом вырезать
-            Camera.main.backgroundColor =
-                _mapSceneData.GetPlanetFar(planetFarIndex).GetComponent<MeshRenderer>().material.color;
-            
+
             _activePlanet.Activate();
             _planetaryCamera.m_Priority = 15;
             IsPlanetaryCameraActive = true;
@@ -51,9 +51,7 @@ namespace _CONTENT.CodeBase.MapModule.CameraControl
         public void ActivateStarSystemCamera()
         {
             if (!IsPlanetaryCameraActive) return;
-            //ЦВЕТ КАМЕРЫ ВЫРЕЗАТЬ
-            Camera.main.backgroundColor = _mainCameraColor;
-            
+
             _planetaryCamera.m_Priority = 5;
 
             _activePlanet.Deactivate();

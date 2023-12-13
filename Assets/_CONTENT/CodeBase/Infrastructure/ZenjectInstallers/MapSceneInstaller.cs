@@ -4,6 +4,7 @@ using _CONTENT.CodeBase.MapModule;
 using _CONTENT.CodeBase.MapModule.CameraControl;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration;
+using _CONTENT.CodeBase.StaticData;
 using UnityEngine;
 using Zenject;
 
@@ -26,18 +27,18 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
             BindCameraSwitchSystem();
         }
 
-        private void BindGenerators()
-        {
-            Container.BindInterfacesAndSelfTo<PlanetNearGenerator>().AsTransient();
-            Container.BindInterfacesAndSelfTo<StarSystemGenerator>().AsSingle().NonLazy();
-        }
-
         private void BindGenerationParameters()
         {
             Container
                 .BindInstance(_starSystemGenerationParams)
                 .AsSingle()
                 .NonLazy();
+        }
+
+        private void BindGenerators()
+        {
+            Container.BindInterfacesAndSelfTo<PlanetNearGenerator>().AsTransient();
+            Container.BindInterfacesAndSelfTo<StarSystemGenerator>().AsSingle().NonLazy();
         }
 
         private void BindMapFactory()

@@ -42,7 +42,6 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
 
         private void OnMouseRightClick(IClickable clickable)
         {
-            Debug.Log("Right click on " + clickable);
         }
 
         private void OnMouseRightClickNoHit()

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eedc35175a244f70a3969b19562f02ae, type: 3}
+  m_Name: Gradients Collection
+  m_EditorClassIdentifier: 
+  <Collection>k__BackingField:
+  - {fileID: 11400000, guid: 81077cadcaa91f744a119379c800d6ef, type: 2}
+  - {fileID: 11400000, guid: fe95ee04571594a4082b08082f2e0705, type: 2}
+  - {fileID: 11400000, guid: 22e1ad8481f161d488bdb3db8f3919d4, type: 2}
+  - {fileID: 11400000, guid: b4801fcfd35bb8a459a7031da9d29088, type: 2}
+  - {fileID: 11400000, guid: 8c2e464a2d5e80a4090d8c1a761de7e2, type: 2}
+  - {fileID: 11400000, guid: 0c98fe9e86d427746aa21e927ec1503c, type: 2}
+  - {fileID: 11400000, guid: 72463b5299a84b84abdde09de96e8f37, type: 2}
+  - {fileID: 11400000, guid: 0f4c0154a5d97ea46b570b689ace8dea, type: 2}
+  - {fileID: 11400000, guid: 242066d490e32d14e9065305babe4f6b, type: 2}
+  - {fileID: 11400000, guid: 1403b4d806aa63344bbddaac983f8c33, type: 2}
