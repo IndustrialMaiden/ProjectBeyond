@@ -56,10 +56,11 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
             _verticalAxis = _distance / 2;
             
             float speedCoefficient = 5f;
+            float distanceFactor = Mathf.Pow(_distance, 1.5f);
 
             var direction = _directionType == DirectionType.Clockwise ? -1 : 1;
             
-            return speedCoefficient / _distance * direction * _speedScale;
+            return speedCoefficient / distanceFactor * _speedScale * direction;
         }
     }
 }

@@ -11,7 +11,7 @@ TagManager:
   - Interactable
   - Water
   - UI
-  - 
+  - BlackHole
   - 
   - 
   - 
@@ -38,9 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 701926225
+    locked: 0
   - name: Orbits
     uniqueID: 297151401
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Planets
+    uniqueID: 629863153
+    locked: 0
+  - name: BlackHole
+    uniqueID: 3887266843
     locked: 0

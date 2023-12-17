@@ -7,15 +7,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlanetType2
-  m_Shader: {fileID: -6465566751694194690, guid: 645331ee0e81fc74aa432d0d6bcfb96c, type: 3}
+  m_Name: PlanetType1
+  m_Shader: {fileID: -6465566751694194690, guid: eefcf392da0e49e49a56ce0c087ac038, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _CLOUDSDIRECTION_LEFT
-  - _PLANETTYPE_WAVES
+  - _PLANETTYPE_SIMPLE
   m_InvalidKeywords:
-  - _PLANETTYPE_MOSAIC
+  - _CLOUDSDIRECTION_LEFT
+  - _CLOUDSDIR_LEFT
+  - _CLO_LEFT
+  - _PLANETTYPE_SPIRAL
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -108,8 +110,10 @@ Material:
     - _AtmosphereBrightness: 10
     - _AtmosphereOpacity: 1
     - _BumpScale: 1
+    - _CLO: 0
+    - _CLOUDSDIR: 0
     - _CLOUDSDIRECTION: 0
-    - _CloudsOpacity: 0.5
+    - _CloudsOpacity: 0.3
     - _CloudsSpeed: 0.05
     - _ColorMask: 15
     - _Cutoff: 0.5
@@ -132,7 +136,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _PLANETTYPE: 6
+    - _PLANETTYPE: 5
     - _PLANETTYPESETCHANGE: 0
     - _Parallax: 0.02
     - _QueueControl: 0
@@ -165,6 +169,7 @@ Material:
     - _RandomOffset: {r: 0, g: 0, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _Specular: {r: 0, g: 0, b: 0, a: 0}
+    - _SurfaceOffset: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &1396286292028917210
 MonoBehaviour:

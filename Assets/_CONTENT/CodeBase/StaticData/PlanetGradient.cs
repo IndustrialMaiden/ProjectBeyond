@@ -9,20 +9,25 @@ namespace _CONTENT.CodeBase.StaticData
     [CreateAssetMenu(fileName = "Planet Gradient", menuName = "Static Data/Planet Gradient", order = 1)]
     public class PlanetGradient : ScriptableObject
     {
-        [field: SerializeField] public Gradient Gradient { get; private set; }
+        [field: SerializeField] public Gradient OriginalGradient { get; private set; }
+        [field: SerializeField, Space] public Gradient CreatedGradient { get; private set; }
 
         public GradientColorKey[] GetGradient()
         {
-            if (Gradient.colorKeys.Length != 4)
-            {
-                throw new ArgumentException("Colors in Gradient != 4", name);
-            }
+            return CreatedGradient.colorKeys;
+        }
+
+        [ContextMenu("Create Gradient")]
+        private void CreateGradient()
+        {
+            if (OriginalGradient.colorKeys.Length != 4)
+                throw new ArgumentException("Colors in Original Gradient != 4", name);
 
             List<GradientColorKey> colorList = new List<GradientColorKey>();
 
             float time = 0.25f;
             
-            foreach (var gradientColorKey in Gradient.colorKeys)
+            foreach (var gradientColorKey in OriginalGradient.colorKeys)
             {
                 colorList.Add(new GradientColorKey(gradientColorKey.color, time));
                 time += 0.25f;
@@ -48,7 +53,12 @@ namespace _CONTENT.CodeBase.StaticData
             colorList.Insert(7, newColors[3]);
             colorList.RemoveAt(0);
 
-            return colorList.ToArray();
+            CreatedGradient.mode = GradientMode.Fixed;
+
+            CreatedGradient.colorKeys = colorList.ToArray();
+            
+            if (CreatedGradient.colorKeys.Length != 8)
+                throw new ArgumentException("Colors in Created Gradient != 8", name);
         }
         
     }

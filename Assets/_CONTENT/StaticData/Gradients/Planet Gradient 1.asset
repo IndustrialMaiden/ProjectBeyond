@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01e6e0beb8f42c0a60ca02a8b8e9ecb, type: 3}
   m_Name: Planet Gradient 1
   m_EditorClassIdentifier: 
-  <Gradient>k__BackingField:
+  <OriginalGradient>k__BackingField:
     serializedVersion: 2
     key0: {r: 0.27450982, g: 0.2784314, b: 0.38431376, a: 1}
     key1: {r: 0.34509805, g: 0.38823533, b: 0.20784315, a: 1}
@@ -22,9 +22,9 @@ MonoBehaviour:
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 17193
-    ctime1: 30917
-    ctime2: 50192
+    ctime0: 7170
+    ctime1: 23824
+    ctime2: 48804
     ctime3: 65535
     ctime4: 0
     ctime5: 0
@@ -41,4 +41,34 @@ MonoBehaviour:
     m_Mode: 1
     m_ColorSpace: -1
     m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  <CreatedGradient>k__BackingField:
+    serializedVersion: 2
+    key0: {r: 0.20588237, g: 0.20882353, b: 0.2882353, a: 1}
+    key1: {r: 0.27450982, g: 0.2784314, b: 0.38431376, a: 1}
+    key2: {r: 0.30980393, g: 0.33333337, b: 0.29607844, a: 0}
+    key3: {r: 0.34509805, g: 0.38823533, b: 0.20784315, a: 0}
+    key4: {r: 0.42156863, g: 0.47254905, b: 0.23725492, a: 0}
+    key5: {r: 0.49803925, g: 0.5568628, b: 0.26666668, a: 0}
+    key6: {r: 0.5882353, g: 0.6392157, b: 0.23529413, a: 0}
+    key7: {r: 0.6784314, g: 0.72156864, b: 0.20392159, a: 0}
+    ctime0: 8192
+    ctime1: 16384
+    ctime2: 24576
+    ctime3: 32768
+    ctime4: 40959
+    ctime5: 49151
+    ctime6: 57343
+    ctime7: 65535
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 1
+    m_ColorSpace: -1
+    m_NumColorKeys: 8
     m_NumAlphaKeys: 2

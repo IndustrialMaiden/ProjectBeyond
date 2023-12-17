@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01e6e0beb8f42c0a60ca02a8b8e9ecb, type: 3}
   m_Name: Planet Gradient 5
   m_EditorClassIdentifier: 
-  <Gradient>k__BackingField:
+  <OriginalGradient>k__BackingField:
     serializedVersion: 2
-    key0: {r: 0.30588236, g: 0.20392159, b: 0.17254902, a: 1}
-    key1: {r: 0.53333336, g: 0.36078432, b: 0.21568629, a: 1}
-    key2: {r: 0.85098046, g: 0.70980394, b: 0.47058827, a: 0}
-    key3: {r: 0.9490197, g: 0.38823533, b: 0.12941177, a: 0}
+    key0: {r: 0.41176474, g: 0.40000004, b: 0.50980395, a: 1}
+    key1: {r: 0.7725491, g: 0.7803922, b: 0.86666673, a: 1}
+    key2: {r: 0.90196085, g: 0.9058824, b: 0.94117653, a: 0}
+    key3: {r: 0.54509807, g: 0.63529414, b: 0.96470594, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 11025
-    ctime1: 27525
-    ctime2: 48188
+    ctime0: 10563
+    ctime1: 29838
+    ctime2: 50192
     ctime3: 65535
     ctime4: 0
     ctime5: 0
@@ -41,4 +41,34 @@ MonoBehaviour:
     m_Mode: 1
     m_ColorSpace: -1
     m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  <CreatedGradient>k__BackingField:
+    serializedVersion: 2
+    key0: {r: 0.30882356, g: 0.3, b: 0.38235295, a: 1}
+    key1: {r: 0.41176474, g: 0.40000004, b: 0.50980395, a: 1}
+    key2: {r: 0.5921569, g: 0.59019613, b: 0.68823534, a: 0}
+    key3: {r: 0.7725491, g: 0.7803922, b: 0.86666673, a: 0}
+    key4: {r: 0.837255, g: 0.8431373, b: 0.9039216, a: 0}
+    key5: {r: 0.90196085, g: 0.9058824, b: 0.94117653, a: 0}
+    key6: {r: 0.72352946, g: 0.7705883, b: 0.95294124, a: 0}
+    key7: {r: 0.54509807, g: 0.63529414, b: 0.96470594, a: 0}
+    ctime0: 8192
+    ctime1: 16384
+    ctime2: 24576
+    ctime3: 32768
+    ctime4: 40959
+    ctime5: 49151
+    ctime6: 57343
+    ctime7: 65535
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 1
+    m_ColorSpace: -1
+    m_NumColorKeys: 8
     m_NumAlphaKeys: 2
