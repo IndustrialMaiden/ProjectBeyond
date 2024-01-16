@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using _CONTENT.CodeBase.Infrastructure.Factory;
 using _CONTENT.CodeBase.MapModule.StarSystem;
-using _CONTENT.CodeBase.MapModule.StarSystem.PlanetFarObjects;
+using _CONTENT.CodeBase.MapModule.StarSystem.PlanetsFar;
+using _CONTENT.CodeBase.MapModule.StarSystemFactory;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration;
 using _CONTENT.CodeBase.StaticData;
 using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
-using Zenject;
-using Random = System.Random;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
 {
-    public class StarSystemGenerator : IInitializable
+    public class StarSystemGenerator
     {
         private StarSystemGenerationParams _genParams;
         private IMapFactory _mapFactory;
         private PlanetNearGenerator _planetNearGen;
         private MapSceneData _mapSceneData;
+
+        private RandomGenerator _starSystemRandom;
         
         private List<int> _sectorsIndexes = new List<int>();
 
@@ -30,38 +30,23 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
             _mapSceneData = mapSceneData;
         }
 
-        public void Initialize()
+        public void GenerateStarSystem(int seed, Action onGenerated)
         {
-            //Это надо поубирать
+            _starSystemRandom = new RandomGenerator(seed);
             
-            Random random = new Random();
-
-            var seed = random.Next(0, Int32.MaxValue);
-            
-            PlayerPrefs.SetInt("SEED", seed);
-            
-            LucidRandom.InitState(seed);
-            
-            GenerateStarSystem();
-        }
-
-        public void GenerateStarSystem()
-        {
             StarSystemComponent starSystemComponent = _mapFactory.CreateStarSystem();
             SystemCenter systemCenter = _mapFactory.CreateSystemCenter();
-            
             starSystemComponent.SetSystemCenter(systemCenter);
             
-            InitializeSectors();
-
+            InitializeSectorsForPlanetsPosition();
 
             CreatePlanets(systemCenter, starSystemComponent);
 
             starSystemComponent.AssignNeighbours();
             
             starSystemComponent.transform.position = _genParams.StarSystemCenter;
-
-
+            
+            onGenerated?.Invoke();
         }
 
         private void CreatePlanets(SystemCenter systemCenter, StarSystemComponent starSystemComponent)
@@ -70,9 +55,9 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
 
             for (int i = 0; i < _genParams.PlanetsCount; i++)
             {
-                float size = LucidRandom.Range(_genParams.PossiblePlanetSize.x, _genParams.PossiblePlanetSize.y);
-                float distance = LucidRandom.Range(_genParams.PossiblePlanetDistance.x, _genParams.PossiblePlanetDistance.y);
-                DirectionType directionType = (DirectionType) LucidRandom.Range(0, 2);
+                float size = _starSystemRandom.Range(_genParams.PossiblePlanetSize.x, _genParams.PossiblePlanetSize.y);
+                float distance = _starSystemRandom.Range(_genParams.PossiblePlanetDistance.x, _genParams.PossiblePlanetDistance.y);
+                DirectionType directionType = (DirectionType) _starSystemRandom.Range(0, 2);
 
                 totalDistance += distance + size;
 
@@ -91,14 +76,14 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
             }
         }
 
-        private void InitializeSectors()
+        private void InitializeSectorsForPlanetsPosition()
         {
             for (int i = 0; i < _genParams.PlanetsCount; i++)
             {
                 _sectorsIndexes.Add(i);
             }
 
-            var array = LucidRandom.Shuffle(_sectorsIndexes).ToArray();
+            var array = _starSystemRandom.Shuffle(_sectorsIndexes).ToArray();
             _sectorsIndexes = array.ToList();
         }
 
@@ -106,7 +91,7 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
         {
             float sectorSize = 2 * Mathf.PI / _genParams.PlanetsCount;
             float sectorStart = sectorSize * _sectorsIndexes[planetIndex];
-            float randomAngleInSector = sectorStart + LucidRandom.Range(0, sectorSize);
+            float randomAngleInSector = sectorStart + _starSystemRandom.Range(0, sectorSize);
 
             return new Vector3(distance * Mathf.Cos(randomAngleInSector), distance * Mathf.Sin(randomAngleInSector), 0);
         }

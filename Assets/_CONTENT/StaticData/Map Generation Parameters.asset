@@ -15,7 +15,7 @@ MonoBehaviour:
   <PlanetsCount>k__BackingField: 6
   <MovingSpeedScale>k__BackingField: 2
   <PossiblePlanetSize>k__BackingField: {x: 8, y: 10}
-  <PossiblePlanetDistance>k__BackingField: {x: 2, y: 3}
+  <PossiblePlanetDistance>k__BackingField: {x: 3, y: 4}
   <PlanetRegionsCount>k__BackingField: 15
   <RegionsMapHeight>k__BackingField: 80
   <RegionsMapWidth>k__BackingField: 100

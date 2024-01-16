@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using _CONTENT.CodeBase.MapModule.StarSystem.Regions;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystem
@@ -8,12 +10,13 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
         public int Index { get; private set; }
         
         private List<Region> _regions = new List<Region>();
+        [SerializeField] private RegionActivation _regionActivation;
 
-        public void Activate() => 
-            gameObject.SetActive(true);
+        public void Activate() =>
+            _regionActivation.Show();
         
         public void Deactivate() => 
-            gameObject.SetActive(false);
+            _regionActivation.Hide();
 
         public void SetIndex(int planetIndex) => 
             Index = planetIndex;
@@ -24,4 +27,5 @@ namespace _CONTENT.CodeBase.MapModule.StarSystem
         public List<Region> GetRegions() => 
             _regions;
     }
+    
 }

@@ -9,56 +9,6 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
     {
         private static float zPosition = 0f;
 
-        public static Mesh CreatePolygonMesh(Vector2[] colliderPath)
-        {
-            Vector2[] path = colliderPath;
-            Mesh msh = new Mesh();
-
-            msh.vertices = path.Select(v => new Vector3(v.x, v.y, zPosition)).ToArray();
-            msh.triangles = new Triangulator(path).Triangulate();
-
-            msh.RecalculateNormals();
-            msh.RecalculateBounds();
-
-            Bounds bounds = msh.bounds;
-
-            msh.uv = path.Select(v => new Vector2(v.x / bounds.size.x, v.y / bounds.size.y)).ToArray();
-
-            return msh;
-        }
-
-        /*public static Mesh CreateCircleMesh()
-        {
-            var numOfPoints = 64;
-
-            float angleStep = 360.0f / (float) numOfPoints;
-            List<Vector3> vertexList = new List<Vector3>();
-            List<int> triangleList = new List<int>();
-            Quaternion quaternion = Quaternion.Euler(0.0f, 0.0f, angleStep);
-            // Make first triangle.
-            vertexList.Add(new Vector3(0.0f, 0.0f, 0.0f)); // 1. Circle center.
-            vertexList.Add(new Vector3(0.0f, 0.5f, 0.0f)); // 2. First vertex on circle outline (radius = 0.5f)
-            vertexList.Add(quaternion * vertexList[1]); // 3. First vertex on circle outline rotated by angle)
-            // Add triangle indices.
-            triangleList.Add(0);
-            triangleList.Add(1);
-            triangleList.Add(2);
-            for (int i = 0; i < numOfPoints - 1; i++)
-            {
-                triangleList.Add(0); // Index of circle center.
-                triangleList.Add(vertexList.Count - 1);
-                triangleList.Add(vertexList.Count);
-                vertexList.Add(quaternion * vertexList[vertexList.Count - 1]);
-            }
-            
-
-            Mesh mesh = new Mesh();
-            mesh.SetVertices(vertexList);
-            mesh.triangles = triangleList.ToArray();
-            mesh.RecalculateBounds();
-
-            return mesh;*/
-
         public static Mesh CreateCircleMesh()
         {
             var numOfPoints = 64;
@@ -98,62 +48,25 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
 
             return mesh;
 
-            /*public static Mesh CreateCircleMesh()
-            {
-                int n = 64;
-                float radius = 0.5f;
-    
-                Mesh mesh = new Mesh();
-    
-                //verticies
-                List<Vector3> verticiesList = new List<Vector3> { };
-                float x;
-                float y;
-                for (int i = 0; i < n; i++)
-                {
-                    x = radius * Mathf.Sin((2 * Mathf.PI * i) / n);
-                    y = radius * Mathf.Cos((2 * Mathf.PI * i) / n);
-                    verticiesList.Add(new Vector3(x, y, 0f));
-                }
-    
-                Vector3[] verticies = verticiesList.ToArray();
-    
-                //triangles
-                List<int> trianglesList = new List<int> { };
-                for (int i = 0; i < (n - 2); i++)
-                {
-                    trianglesList.Add(0);
-                    trianglesList.Add(i + 1);
-                    trianglesList.Add(i + 2);
-                }
-    
-                int[] triangles = trianglesList.ToArray();
-    
-                //normals
-                List<Vector3> normalsList = new List<Vector3> { };
-                for (int i = 0; i < verticies.Length; i++)
-                {
-                    normalsList.Add(-Vector3.forward);
-                }
-    
-                Vector3[] normals = normalsList.ToArray();
-    
-                Vector2[] uvs = new Vector2[verticies.Length];
-                for (int i = 0; i < uvs.Length; i++)
-                {
-                    uvs[i] = new Vector2(verticies[i].x / (radius * 2) + 0.5f, verticies[i].y / (radius * 2) + 0.5f);
-                }
-    
-                //initialise
-                mesh.vertices = verticies;
-                mesh.triangles = triangles;
-                mesh.normals = normals;
-                mesh.uv = uvs;
-    
-                return mesh;
-            }*/
         }
 
+        public static Mesh CreatePolygonMesh(Vector2[] colliderPath)
+        {
+            Vector2[] path = colliderPath;
+            Mesh msh = new Mesh();
+
+            msh.vertices = path.Select(v => new Vector3(v.x, v.y, zPosition)).ToArray();
+            msh.triangles = new Triangulator(path).Triangulate();
+
+            msh.RecalculateNormals();
+            msh.RecalculateBounds();
+
+            Bounds bounds = msh.bounds;
+
+            msh.uv = path.Select(v => new Vector2(v.x / bounds.size.x, v.y / bounds.size.y)).ToArray();
+
+            return msh;
+        }
     }
     class Triangulator
         {

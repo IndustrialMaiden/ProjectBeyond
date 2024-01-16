@@ -260,10 +260,10 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
             // Код для определения уникальных углов карты...
             var mapCorners = new List<Vector2>
             {
-                new Vector2(0, 0),
-                new Vector2(width, 0),
-                new Vector2(0, height),
-                new Vector2(width, height)
+                new (0, 0),
+                new (width, 0),
+                new (0, height),
+                new (width, height)
             };
 
             // Поиск и удаление близких углов, а затем добавление углов карты
@@ -373,7 +373,8 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
         }
 
 
-        /*public void SortAndRemapCenterIndexes(List<Center> centers)
+        // Нужен ли?
+        public void SortAndRemapCenterIndexes(List<Center> centers)
         {
             const float rangeSize = 40f; // Размер диапазона для Y
             List<Center> sortedCenters = new List<Center>();
@@ -418,7 +419,7 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
             // Копируем отсортированный список обратно в исходный список
             centers.Clear();
             centers.AddRange(sortedCenters);
-        }*/
+        }
 
     }
 }

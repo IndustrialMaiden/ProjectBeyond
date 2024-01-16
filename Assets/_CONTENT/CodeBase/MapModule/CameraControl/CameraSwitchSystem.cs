@@ -1,9 +1,6 @@
 ﻿using System;
-using _CONTENT.CodeBase.MapModule.StarSystem;
-using _CONTENT.CodeBase.MapModule.StarSystemGeneration;
 using _CONTENT.CodeBase.StaticData;
 using Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -11,8 +8,16 @@ namespace _CONTENT.CodeBase.MapModule.CameraControl
 {
     public class CameraSwitchSystem : MonoBehaviour
     {
+        
+        [Header("Physical Cameras")]
+        [SerializeField] private Camera _mainCamera;
+        [SerializeField] private Camera _regionCamera;
+        
+        [Space][Header("Virtual Cameras")]
         [SerializeField] private CinemachineVirtualCamera _starSystemCamera;
         [SerializeField] private CinemachineVirtualCamera _planetaryCamera;
+
+        public Camera InteractionCamera { get; private set; }
 
         private MapSceneData _mapSceneData;
         private StarSystemGenerationParams _genParams;
@@ -21,6 +26,7 @@ namespace _CONTENT.CodeBase.MapModule.CameraControl
         [Inject]
         public void Construct(MapSceneData mapSceneData, StarSystemGenerationParams genParams)
         {
+            InteractionCamera = _mainCamera;
             _mapSceneData = mapSceneData;
             _genParams = genParams;
         }
@@ -29,21 +35,14 @@ namespace _CONTENT.CodeBase.MapModule.CameraControl
         {
             _starSystemCamera.transform.position = new Vector3(_genParams.StarSystemCenter.x,
                 _genParams.StarSystemCenter.y, _starSystemCamera.transform.position.z);
-            
-            _planetaryCamera.transform.position = new Vector3(_genParams.PlanetaryRegionsCenter.x,
-                _genParams.PlanetaryRegionsCenter.y, _planetaryCamera.transform.position.z);
         }
 
         public bool IsPlanetaryCameraActive { get; private set; }
-        private PlanetNear _activePlanet;
 
-        public void ActivatePlanetaryCamera(int planetFarIndex)
+        public void ActivatePlanetaryCamera(int planetIndex)
         {
             if (IsPlanetaryCameraActive) return;
-
-            _activePlanet = _mapSceneData.GetPlanetNear(planetFarIndex);
-
-            _activePlanet.Activate();
+            _planetaryCamera.Follow = _mapSceneData.GetPlanetFar(planetIndex).transform;
             _planetaryCamera.m_Priority = 15;
             IsPlanetaryCameraActive = true;
         }
@@ -51,13 +50,29 @@ namespace _CONTENT.CodeBase.MapModule.CameraControl
         public void ActivateStarSystemCamera()
         {
             if (!IsPlanetaryCameraActive) return;
-
             _planetaryCamera.m_Priority = 5;
-
-            _activePlanet.Deactivate();
-            _activePlanet = null;
-
             IsPlanetaryCameraActive = false;
         }
+
+        public void SetInteractionCamera(MapCamera cameraType)
+        {
+            switch (cameraType)
+            {
+                case MapCamera.StarSystem:
+                    InteractionCamera = _mainCamera;
+                    break;
+                case MapCamera.Planetary:
+                    InteractionCamera = _regionCamera;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(cameraType), cameraType, "Wrong camera type");
+            }
+        }
+    }
+
+    public enum MapCamera
+    {
+        StarSystem,
+        Planetary
     }
 }

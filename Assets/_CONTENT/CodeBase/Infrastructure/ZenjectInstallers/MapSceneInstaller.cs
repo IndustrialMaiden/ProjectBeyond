@@ -1,7 +1,8 @@
-﻿using _CONTENT.CodeBase.Infrastructure.Factory;
-using _CONTENT.CodeBase.Infrastructure.MouseInteraction;
+﻿using _CONTENT.CodeBase.Infrastructure.MouseInteraction;
+using _CONTENT.CodeBase.Infrastructure.SceneControl;
 using _CONTENT.CodeBase.MapModule;
 using _CONTENT.CodeBase.MapModule.CameraControl;
+using _CONTENT.CodeBase.MapModule.StarSystemFactory;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration;
 using _CONTENT.CodeBase.StaticData;
@@ -25,20 +26,22 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
             BindMouseEventHandler();
             BindMapSceneData();
             BindCameraSwitchSystem();
+            
+            // Это нужно исправить
+            ProjectContext.Instance.Container.Resolve<SceneLoader>().UpdateSceneContainer(Container);
         }
 
         private void BindGenerationParameters()
         {
             Container
                 .BindInstance(_starSystemGenerationParams)
-                .AsSingle()
-                .NonLazy();
+                .AsSingle();
         }
 
         private void BindGenerators()
         {
-            Container.BindInterfacesAndSelfTo<PlanetNearGenerator>().AsTransient();
-            Container.BindInterfacesAndSelfTo<StarSystemGenerator>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<PlanetNearGenerator>().AsSingle();
+            Container.BindInterfacesAndSelfTo<StarSystemGenerator>().AsSingle();
         }
 
         private void BindMapFactory()
@@ -46,16 +49,14 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
             Container
                 .Bind<IMapFactory>()
                 .To<MapFactory>()
-                .AsSingle()
-                .NonLazy();
+                .AsSingle();
         }
 
         private void BindMouseEventSystem()
         {
             Container
                 .BindInterfacesAndSelfTo<MouseEventSystem>()
-                .AsSingle()
-                .NonLazy();
+                .AsSingle();
         }
 
         private void BindMouseEventHandler()
@@ -79,8 +80,7 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
             Container
                 .Bind<CameraSwitchSystem>()
                 .FromInstance(_cameraSwitchSystem)
-                .AsSingle()
-                .NonLazy();
+                .AsSingle();
         }
     }
 }

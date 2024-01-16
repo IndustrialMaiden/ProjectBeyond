@@ -1,5 +1,7 @@
-using _CONTENT.CodeBase.Infrastructure.Factory;
+using System;
 using _CONTENT.CodeBase.MapModule.StarSystem;
+using _CONTENT.CodeBase.MapModule.StarSystem.Regions;
+using _CONTENT.CodeBase.MapModule.StarSystemFactory;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration.GraphObjects;
 using _CONTENT.CodeBase.StaticData;
 using AnnulusGames.LucidTools.RandomKit;
@@ -44,7 +46,7 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
                 Region region = _mapFactory.CreatePlanetRegion(planetNear.transform);
                 // Генерацию фракции отсюда нужно убрать
                 var faction = (Faction) random.Range(0, 5);
-                region.Construct(center, faction);
+                region.Construct(center, faction, LoadFactionMaterial(faction));
                 planetNear.AddRegion(region);
             }
             
@@ -61,6 +63,26 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGenerati
             foreach (var index in center.neighborsIndexes)
             {
                 region.AddNeighbour(planetNear.GetRegions()[index]);
+            }
+        }
+        
+        // Asset Provider?
+        private Material LoadFactionMaterial(Faction faction)
+        {
+            switch (faction)
+            {
+                case Faction.Insects:
+                    return Resources.Load<Material>("Z_DemoMaterials/Insects_Mat");
+                case Faction.Demons:
+                    return Resources.Load<Material>("Z_DemoMaterials/Demons_Mat");
+                case Faction.Mechanoids:
+                    return Resources.Load<Material>("Z_DemoMaterials/Mechanoids_Mat");
+                case Faction.Mages:
+                    return Resources.Load<Material>("Z_DemoMaterials/Mages_Mat");
+                case Faction.Necrons:
+                    return Resources.Load<Material>("Z_DemoMaterials/Necrons_Mat");
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }
