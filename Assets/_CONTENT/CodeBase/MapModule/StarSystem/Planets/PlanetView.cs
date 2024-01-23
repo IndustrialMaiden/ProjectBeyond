@@ -3,7 +3,7 @@ using _CONTENT.CodeBase.Infrastructure.MouseInteraction;
 using _CONTENT.CodeBase.Infrastructure.StrategyControl;
 using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetsFar
+namespace _CONTENT.CodeBase.MapModule.StarSystem.Planets
 {
     public class PlanetView : MonoBehaviour, ISelectable, IClickable
     {

@@ -1,7 +1,6 @@
-﻿using _CONTENT.CodeBase.MapModule.StarSystem.PlanetsFar;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.StarSystem
+namespace _CONTENT.CodeBase.MapModule.StarSystem.Planets
 {
     [RequireComponent(typeof(PlanetView))]
     public class PlanetRotation : MonoBehaviour

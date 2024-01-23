@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.StarSystem.Regions
+namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetaryMap
 {
-    [RequireComponent(typeof(RegionView))]
-    public class RegionActivation : MonoBehaviour
+    [RequireComponent(typeof(PlanetaryMapView))]
+    public class RegionsActivation : MonoBehaviour
     {
         private Dictionary<Material, float> originalAlphas = new Dictionary<Material, float>();
         private List<Material> materials = new List<Material>();

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using _CONTENT.CodeBase.MapModule.StarSystem.PlanetsFar;
+using _CONTENT.CodeBase.MapModule.StarSystem.Planets;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystem

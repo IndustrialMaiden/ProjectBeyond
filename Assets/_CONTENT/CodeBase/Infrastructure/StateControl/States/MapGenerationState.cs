@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using _CONTENT.CodeBase.MapModule.StarSystem;
-using _CONTENT.CodeBase.MapModule.StarSystem.PlanetsFar;
+using _CONTENT.CodeBase.MapModule.StarSystem.PlanetaryMap;
+using _CONTENT.CodeBase.MapModule.StarSystem.Planets;
 using _CONTENT.CodeBase.MapModule.StarSystemFactory;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration;
 using _CONTENT.CodeBase.MapModule.StarSystemGeneration.PlanetRegionsGeneration;

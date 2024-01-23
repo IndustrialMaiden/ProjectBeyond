@@ -4,6 +4,7 @@ using _CONTENT.CodeBase.Infrastructure.SceneControl;
 using _CONTENT.CodeBase.MapModule;
 using _CONTENT.CodeBase.MapModule.CameraControl;
 using _CONTENT.CodeBase.MapModule.StarSystem;
+using _CONTENT.CodeBase.MapModule.StarSystem.PlanetaryMap;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.Infrastructure.StateControl.States

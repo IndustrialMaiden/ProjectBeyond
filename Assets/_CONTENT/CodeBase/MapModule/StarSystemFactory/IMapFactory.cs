@@ -2,7 +2,8 @@
 using _CONTENT.CodeBase.Infrastructure.Services;
 using _CONTENT.CodeBase.Infrastructure.Services.Progress;
 using _CONTENT.CodeBase.MapModule.StarSystem;
-using _CONTENT.CodeBase.MapModule.StarSystem.PlanetsFar;
+using _CONTENT.CodeBase.MapModule.StarSystem.PlanetaryMap;
+using _CONTENT.CodeBase.MapModule.StarSystem.Planets;
 using UnityEngine;
 
 namespace _CONTENT.CodeBase.MapModule.StarSystemFactory

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetsFar
+namespace _CONTENT.CodeBase.MapModule.StarSystem.Planets
 {
     public class PlanetData
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.StarSystem.Regions
+namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetaryMap
 {
     public class RegionData
     {

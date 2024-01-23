@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using _CONTENT.CodeBase.MapModule.StarSystem.Regions;
 
-namespace _CONTENT.CodeBase.MapModule.StarSystem
+namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetaryMap
 {
     public class PlanetaryMapData
     {

@@ -2,7 +2,7 @@
 using _CONTENT.CodeBase.Infrastructure.MouseInteraction;
 using UnityEngine;
 
-namespace _CONTENT.CodeBase.MapModule.StarSystem.Regions
+namespace _CONTENT.CodeBase.MapModule.StarSystem.PlanetaryMap
 {
     public class RegionView : MonoBehaviour, ISelectable
     {

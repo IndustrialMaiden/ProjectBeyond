@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using _CONTENT.CodeBase.MapModule.StarSystem;
-using _CONTENT.CodeBase.MapModule.StarSystem.PlanetsFar;
+using _CONTENT.CodeBase.MapModule.StarSystem.Planets;
 using _CONTENT.CodeBase.StaticData;
 using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
