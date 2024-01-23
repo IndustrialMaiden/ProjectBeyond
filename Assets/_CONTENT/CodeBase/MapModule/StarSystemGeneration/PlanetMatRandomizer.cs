@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using _CONTENT.CodeBase.StaticData;
 using AnnulusGames.LucidTools.RandomKit;
 using UnityEngine;
@@ -14,28 +15,45 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
         private const string CloudsDirection = "_CLOUDSDIRECTION";
         private const string CloudsSpeed = "_CloudsSpeed";
 
-        public static Material GetMaterial(StarSystemGenerationParams genParams)
+        public static readonly Dictionary<int, string> PlanetMatPatterns = new Dictionary<int, string>()
         {
-            // Randomize Material
-            int materialVariantNumber = LucidRandom.Range(0, 2);
+            {0, "BIGCIRCLES"},
+            {1, "SMALLCIRCLES"},
+            {2, "MOSAIC"},
+            {3, "HEXISLANDS"},
+            {4, "SIMPLECIRCULAR"},
+            {5, "SIMPLE"},
+            {6, "ISLANDSPOS"},
+            {7, "ISLANDSNEG"},
+            {8, "SPIRAL"},
+            {9, "HEXAGON"},
+            {10, "TRACERY"},
+            {11, "STRIPES"},
+            {12, "WAVES"},
+        };
 
+        public static Material GetMaterial(WorldGenSettings genParams, RandomGenerator starSystemRandom, int matNumber, int gradientNumber)
+        {
+            // Apply Material
+            
             Material planetMat;
 
-            switch (materialVariantNumber)
+            switch (matNumber)
             {
-                case 0:
+                case >= 0 and <= 5:
                     planetMat = new Material(genParams.PlanetMaterialType1);
+                    planetMat.EnableKeyword(PlanetType + PlanetMatPatterns[matNumber]);
                     break;
-                case 1:
+                case >= 6 and <= 12:
                     planetMat = new Material(genParams.PlanetMaterialType2);
+                    planetMat.EnableKeyword(PlanetType + PlanetMatPatterns[matNumber]);
                     break;
                 default:
                     planetMat = new Material(genParams.PlanetMaterialType1);
                     break;
             }
 
-            // Randomize Gradient
-            int gradientNumber = LucidRandom.Range(0, genParams.PlanetGradients.GetCount());
+            // Apply Gradient
 
             GradientColorKey[] gradient = genParams.PlanetGradients.GetItem(gradientNumber).GetGradient();
 
@@ -45,30 +63,17 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
                 planetMat.SetFloat(Location + (i + 1), gradient[i].time);
             }
             
-            // Randomize Planet Type
-            switch (materialVariantNumber)
-            {
-                case 0:
-                    PlanetMatOneVariants variant1 = (PlanetMatOneVariants) LucidRandom.Range(0, Enum.GetNames(typeof(PlanetMatOneVariants)).Length);
-                    planetMat.EnableKeyword(PlanetType + variant1);
-                    break;
-                case 1:
-                    PlanetMatTwoVariants variant2 = (PlanetMatTwoVariants) LucidRandom.Range(0, Enum.GetNames(typeof(PlanetMatTwoVariants)).Length);
-                    planetMat.EnableKeyword(PlanetType + variant2);
-                    break;
-            }
-            
             // Randomize Surface Offset
             Vector3 surfaceOffset = new Vector3(
-                LucidRandom.Range(-10000, 10000), 
-                LucidRandom.Range(-10000, 10000),
-                LucidRandom.Range(-10000, 10000));
+                starSystemRandom.Range(-10000, 10000), 
+                starSystemRandom.Range(-10000, 10000),
+                starSystemRandom.Range(-10000, 10000));
             
             planetMat.SetVector(SurfaceOffset, surfaceOffset);
             
             // Randomize Clouds
             
-            CloudsDirection direction = (CloudsDirection) LucidRandom.Range(0, Enum.GetNames(typeof(CloudsDirection)).Length);
+            CloudsDirection direction = (CloudsDirection) starSystemRandom.Range(0, Enum.GetNames(typeof(CloudsDirection)).Length);
             
             switch (direction)
             {
@@ -80,32 +85,11 @@ namespace _CONTENT.CodeBase.MapModule.StarSystemGeneration
                     break;
             }
             
-            float cloudsSpeed = LucidRandom.Range(0.05f, 0.2f);
+            float cloudsSpeed = starSystemRandom.Range(0.05f, 0.2f);
             planetMat.SetFloat(CloudsSpeed, cloudsSpeed);
             
             return planetMat;
         }
-    }
-
-    public enum PlanetMatOneVariants
-    {
-        BIGCIRCLES,
-        SMALLCIRCLES,
-        MOSAIC,
-        HEXISLANDS,
-        SIMPLECIRCULAR,
-        SIMPLE
-    }
-    
-    public enum PlanetMatTwoVariants
-    {
-        ISLANDSPOS,
-        ISLANDSNEG,
-        SPIRAL,
-        HEXAGON,
-        TRACERY,
-        STRIPES,
-        WAVES
     }
 
     public enum CloudsDirection

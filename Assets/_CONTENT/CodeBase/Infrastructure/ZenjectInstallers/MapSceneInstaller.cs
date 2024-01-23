@@ -13,7 +13,7 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
 {
     public class MapSceneInstaller : MonoInstaller
     {
-        [SerializeField] private StarSystemGenerationParams _starSystemGenerationParams;
+        [SerializeField] private WorldGenSettings worldGenSettings;
         [SerializeField] private MapSceneData _mapSceneData;
         [SerializeField] private CameraSwitchSystem _cameraSwitchSystem;
         
@@ -34,13 +34,13 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
         private void BindGenerationParameters()
         {
             Container
-                .BindInstance(_starSystemGenerationParams)
+                .BindInstance(worldGenSettings)
                 .AsSingle();
         }
 
         private void BindGenerators()
         {
-            Container.BindInterfacesAndSelfTo<PlanetNearGenerator>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlanetaryMapGenerator>().AsSingle();
             Container.BindInterfacesAndSelfTo<StarSystemGenerator>().AsSingle();
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
-using _CONTENT.CodeBase.Infrastructure.CoroutineRunner;
-using _CONTENT.CodeBase.Infrastructure.StateFactory;
+using _CONTENT.CodeBase.Infrastructure.CoroutineRunnerDir;
+using _CONTENT.CodeBase.Infrastructure.StateControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;

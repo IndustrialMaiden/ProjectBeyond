@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using _CONTENT.CodeBase.Infrastructure.CoroutineRunner;
+using _CONTENT.CodeBase.Infrastructure.CoroutineRunnerDir;
 using _CONTENT.CodeBase.Infrastructure.SceneControl;
 using _CONTENT.CodeBase.MapModule;
 using _CONTENT.CodeBase.MapModule.CameraControl;
@@ -40,14 +40,14 @@ namespace _CONTENT.CodeBase.Infrastructure.StateControl.States
             yield return new WaitForSeconds(0.5f);
             
             DisablePlanetsRenderer();
-            _mapSceneData.GetPlanetNear(_planetIndex).Activate();
+            _mapSceneData.GetPlanetaryMap(_planetIndex).Activate();
             _cameraSwitchSystem.SetInteractionCamera(MapCamera.Planetary);
         }
 
         public void Exit()
         {
             _coroutineRunner.StopAllCoroutines();
-            PlanetNear planet = _mapSceneData.GetPlanetNear(_planetIndex);
+            PlanetaryMapView planet = _mapSceneData.GetPlanetaryMap(_planetIndex);
             if (planet.gameObject.activeSelf) planet.Deactivate();
             _mapSceneData.SetActivePlanetNear(-1);
             EnablePlanetsRenderer();
@@ -55,7 +55,7 @@ namespace _CONTENT.CodeBase.Infrastructure.StateControl.States
 
         private void EnablePlanetsRenderer()
         {
-            foreach (var planetFar in _mapSceneData.PlanetsFar)
+            foreach (var planetFar in _mapSceneData.Planets)
             {
                 if (planetFar.Key == _planetIndex) continue;
                 planetFar.Value.GetComponent<MeshRenderer>().enabled = true;
@@ -64,7 +64,7 @@ namespace _CONTENT.CodeBase.Infrastructure.StateControl.States
 
         private void DisablePlanetsRenderer()
         {
-            foreach (var planetFar in _mapSceneData.PlanetsFar)
+            foreach (var planetFar in _mapSceneData.Planets)
             {
                 if (planetFar.Key == _planetIndex) continue;
                 planetFar.Value.GetComponent<MeshRenderer>().enabled = false;

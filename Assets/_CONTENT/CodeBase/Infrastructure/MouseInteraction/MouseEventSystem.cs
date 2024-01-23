@@ -8,7 +8,7 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
     public class MouseEventSystem : ITickable
     {
         private CameraSwitchSystem _cameraSwitchSystem;
-        
+
         public event Action<ISelectable> OnMouseOverEvent;
         public event Action<ISelectable> OnMouseExitEvent;
         public event Action<IClickable> OnMouseLeftClickEvent;

@@ -1,9 +1,6 @@
 ﻿using System;
 using _CONTENT.CodeBase.Infrastructure.StateControl;
 using _CONTENT.CodeBase.Infrastructure.StateControl.States;
-using _CONTENT.CodeBase.MapModule;
-using _CONTENT.CodeBase.MapModule.CameraControl;
-using _CONTENT.CodeBase.MapModule.StarSystem.PlanetsFar;
 
 namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
 {
@@ -11,13 +8,11 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
     {
         private readonly MouseEventSystem _mouseEventSystem;
         private readonly StateMachine _stateMachine;
-        private readonly MapSceneData _mapSceneData;
 
-        public MouseEventHandler(MouseEventSystem mouseEventSystem, StateMachine stateMachine, CameraSwitchSystem cameraSwitchSystem, MapSceneData mapSceneData)
+        public MouseEventHandler(MouseEventSystem mouseEventSystem, StateMachine stateMachine)
         {
             _mouseEventSystem = mouseEventSystem;
             _stateMachine = stateMachine;
-            _mapSceneData = mapSceneData;
             SubscribeToEvents();
         }
 
@@ -38,12 +33,6 @@ namespace _CONTENT.CodeBase.Infrastructure.MouseInteraction
 
         private void OnMouseLeftClick(IClickable clickable)
         {
-            if (clickable is PlanetFar planetFar && _mapSceneData.ActivePlanetNearIndex == -1)
-            {
-                _stateMachine.Enter<PlanetViewState, int>(planetFar.Index);
-                return;
-            }
-            
             clickable.OnLeftClick();
         }
 

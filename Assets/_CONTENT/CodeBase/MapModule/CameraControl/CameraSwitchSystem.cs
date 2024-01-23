@@ -8,23 +8,22 @@ namespace _CONTENT.CodeBase.MapModule.CameraControl
 {
     public class CameraSwitchSystem : MonoBehaviour
     {
-        
-        [Header("Physical Cameras")]
+        [Header("Physical Cameras")] 
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private Camera _regionCamera;
-        
-        [Space][Header("Virtual Cameras")]
+
+        [Space] [Header("Virtual Cameras")] 
         [SerializeField] private CinemachineVirtualCamera _starSystemCamera;
         [SerializeField] private CinemachineVirtualCamera _planetaryCamera;
 
         public Camera InteractionCamera { get; private set; }
 
         private MapSceneData _mapSceneData;
-        private StarSystemGenerationParams _genParams;
-        
+        private WorldGenSettings _genParams;
+
 
         [Inject]
-        public void Construct(MapSceneData mapSceneData, StarSystemGenerationParams genParams)
+        public void Construct(MapSceneData mapSceneData, WorldGenSettings genParams)
         {
             InteractionCamera = _mainCamera;
             _mapSceneData = mapSceneData;
@@ -42,11 +41,11 @@ namespace _CONTENT.CodeBase.MapModule.CameraControl
         public void ActivatePlanetaryCamera(int planetIndex)
         {
             if (IsPlanetaryCameraActive) return;
-            _planetaryCamera.Follow = _mapSceneData.GetPlanetFar(planetIndex).transform;
+            _planetaryCamera.Follow = _mapSceneData.GetPlanet(planetIndex).transform;
             _planetaryCamera.m_Priority = 15;
             IsPlanetaryCameraActive = true;
         }
-        
+
         public void ActivateStarSystemCamera()
         {
             if (!IsPlanetaryCameraActive) return;

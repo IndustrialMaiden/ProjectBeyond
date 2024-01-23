@@ -1,6 +1,4 @@
-﻿using _CONTENT.CodeBase.Infrastructure.StateFactory;
-
-namespace _CONTENT.CodeBase.Infrastructure.StateControl
+﻿namespace _CONTENT.CodeBase.Infrastructure.StateControl
 {
     public class StateMachine
     {

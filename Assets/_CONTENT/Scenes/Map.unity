@@ -811,7 +811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f47080814570406a9cc6c58fbd6a4ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _starSystemGenerationParams: {fileID: 11400000, guid: 9be0abd7b0aca0142bcc0b6ddc4c6c82, type: 2}
+  worldGenSettings: {fileID: 11400000, guid: 9be0abd7b0aca0142bcc0b6ddc4c6c82, type: 2}
   _mapSceneData: {fileID: 128789309}
   _cameraSwitchSystem: {fileID: 2007950464}
 --- !u!114 &1885690984

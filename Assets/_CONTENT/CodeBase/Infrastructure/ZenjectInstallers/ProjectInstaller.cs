@@ -1,7 +1,7 @@
-﻿using _CONTENT.CodeBase.Infrastructure.CoroutineRunner;
+﻿using _CONTENT.CodeBase.Infrastructure.CoroutineRunnerDir;
 using _CONTENT.CodeBase.Infrastructure.SceneControl;
 using _CONTENT.CodeBase.Infrastructure.StateControl;
-using _CONTENT.CodeBase.Infrastructure.StateFactory;
+using _CONTENT.CodeBase.Infrastructure.StrategyControl;
 using Zenject;
 
 namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
@@ -12,6 +12,7 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
         {
             BindStateFactory();
             BindStateMachine();
+            BindStrategyFactory();
             BindCoroutineRunner();
             BindSceneLoader();
         }
@@ -20,7 +21,7 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
         {
             Container
                 .Bind<IStateFactory>()
-                .To<StateFactory.StateFactory>()
+                .To<StateFactory>()
                 .AsSingle();
         }
 
@@ -35,7 +36,7 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
         {
             Container
                 .Bind<ICoroutineRunner>()
-                .To<CoroutineRunner.CoroutineRunner>()
+                .To<CoroutineRunner>()
                 .FromNewComponentOnNewGameObject()
                 .AsSingle();
         }
@@ -44,6 +45,14 @@ namespace _CONTENT.CodeBase.Infrastructure.ZenjectInstallers
         {
             Container
                 .Bind<SceneLoader>()
+                .AsSingle();
+        }
+
+        private void BindStrategyFactory()
+        {
+            Container
+                .Bind<IStrategyFactory>()
+                .To<StrategyFactory>()
                 .AsSingle();
         }
     }
